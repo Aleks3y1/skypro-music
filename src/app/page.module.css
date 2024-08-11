@@ -1,7 +1,7 @@
 .wrapper {
     width: 100%;
     /*min-height: 100%;*/
-    overflow: auto;
+    overflow: hidden;
     background-color: #383838;
     /*overflow: auto*/
 }
@@ -26,4 +26,5 @@
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
     justify-content: space-between;
+    background-color: #181818;
 }
