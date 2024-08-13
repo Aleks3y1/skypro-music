@@ -1,4 +1,5 @@
 import styles from "@/components/MainContentTitle/MainContentTitle.module.css";
+import {useCustomContext} from "@/hooks/useCustomContext";
 
 export default function MainContentTitle() {
     return (

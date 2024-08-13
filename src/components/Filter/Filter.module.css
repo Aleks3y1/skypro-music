@@ -28,6 +28,7 @@
     border: 1px solid #ffffff;
     border-radius: 60px;
     padding: 6px 20px;
+    position: relative;
 }
 
 .filter__button:not(:last-child) {
@@ -36,12 +37,70 @@
 
 ._btnText:hover {
     border-color: #d9b6ff;
-    color: #d9b6ff;
     cursor: pointer;
 }
 
-._btnText:active {
-    border-color: #ad61ff;
-    color: #ad61ff;
-    cursor: pointer;
+/*._btnText:active {*/
+/*    border-color: #ad61ff;*/
+/*    color: #ad61ff;*/
+/*    cursor: pointer;*/
+/*}*/
+
+.filter__window {
+    width: 248px;
+    height: 305px;
+    top: 100%;
+    /*left: -30%;*/
+    padding: 34px;
+    gap: 10px;
+    border-radius: 12px;
+    background-color: #313131;
+    position: absolute;
+    z-index: 100;
+}
+
+.filter__window2 {
+    width: 248px;
+    height: 305px;
+    top: 288px;
+    left: 576px;
+    padding: 34px;
+    gap: 10px;
+    border-radius: 12px;
+    background-color: #313131;
+    position: fixed;
+}
+
+.filter__window3 {
+    width: 248px;
+    height: 305px;
+    top: 288px;
+    left: 386px;
+    padding: 34px;
+    gap: 10px;
+    border-radius: 12px;
+    background-color: #313131;
+    position: fixed;
+}
+
+.filter__window__content {
+    display: flex;
+    flex-direction: column;
+    width: 180px;
+    height: 237px;
+    gap: 24px;
+    overflow-y: auto;
+}
+
+.filter__text:hover {
+    color: #B672FF;
+    text-decoration: underline;
+}
+
+.filter__text {
+    font-family: inherit;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
 }

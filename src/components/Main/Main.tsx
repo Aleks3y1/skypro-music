@@ -4,6 +4,7 @@ import Navigation from "@/components/Navigation/Navigation";
 import MainCenterBlock from "@/components/MainCenterBlock/MainCenterBlock";
 import MainSidebar from "@/components/MainSidebar/MainSidebar";
 
+
 export default function Main() {
     return (
         <main className={styles.main}>
