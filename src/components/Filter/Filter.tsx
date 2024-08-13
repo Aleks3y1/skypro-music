@@ -24,8 +24,6 @@ export default function Filter() {
         }
     }
 
-    console.log(trackList);
-
     return (
         <div className={`${styles.centerblock__filter} ${styles.filter}`}>
             <div className={styles.filter__title}>Искать по:</div>
