@@ -37,6 +37,13 @@
 
 ._btnText:hover {
     border-color: #d9b6ff;
+    color: #d9b6ff;
+    cursor: pointer;
+}
+
+._btnText:active {
+    border-color: #ad61ff;
+    color: #ad61ff;
     cursor: pointer;
 }
 
@@ -66,11 +73,6 @@
     scrollbar-width: thin;
 }
 
-.filter__text:hover {
-    color: #B672FF;
-    text-decoration: underline;
-}
-
 .filter__text {
     font-family: inherit;
     font-size: 20px;
@@ -78,4 +80,16 @@
     line-height: 24px;
     text-align: left;
     letter-spacing: 0;
+}
+
+.filter__text:hover {
+    color: #B672FF;
+    text-decoration: underline;
+}
+
+.filter__text:active {
+    border-color: #ad61ff;
+    color: #ad61ff;
+    cursor: pointer;
+    text-decoration: underline;
 }
