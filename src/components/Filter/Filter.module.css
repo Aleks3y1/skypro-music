@@ -28,6 +28,7 @@
     border: 1px solid #ffffff;
     border-radius: 60px;
     padding: 6px 20px;
+    position: relative;
 }
 
 .filter__button:not(:last-child) {
@@ -44,4 +45,51 @@
     border-color: #ad61ff;
     color: #ad61ff;
     cursor: pointer;
+}
+
+.filter__window {
+    max-width: 248px;
+    max-height: 305px;
+    min-height: auto;
+    top: 104%;
+    left: -30%;
+    padding: 34px;
+    gap: 10px;
+    border-radius: 12px;
+    background-color: #313131;
+    position: absolute;
+    z-index: 100;
+}
+
+.filter__window__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 180px;
+    max-height: 237px;
+    gap: 24px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.filter__text {
+    font-family: inherit;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+    letter-spacing: 0;
+}
+
+.filter__text:hover {
+    color: #B672FF;
+    text-decoration: underline;
+}
+
+.filter__text:active {
+    border-color: #ad61ff;
+    color: #ad61ff;
+    cursor: pointer;
+    text-decoration: underline;
 }
