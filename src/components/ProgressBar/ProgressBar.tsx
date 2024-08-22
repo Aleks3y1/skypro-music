@@ -1,6 +1,15 @@
 import styles from './ProgressBar.module.css';
 
-export default function ProgressBar({ max, value, step, onChange, currentTime, duration }) {
+interface ProgressBarProps {
+    max: number;
+    value: number;
+    step: number;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    currentTime: number;
+    duration: number;
+}
+
+export default function ProgressBar({max, value, step, onChange, currentTime, duration}: ProgressBarProps) {
     const formatDuration = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = Math.floor(seconds % 60);

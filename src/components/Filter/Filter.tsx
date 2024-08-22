@@ -3,7 +3,7 @@ import styles from "@/components/Filter/Filter.module.css";
 import {useState} from "react";
 import {Track} from "@/components/Interfaces/Interfaces";
 
-export default function Filter({trackList}: {trackList: Track[]}) {
+export default function Filter({trackList}: { trackList: {data: Track[] } }) {
     const [isVisible, setIsVisible] = useState(false);
     const handleOnChange = (event: React.MouseEvent<HTMLDivElement>) => {
         setIsVisible(!isVisible);

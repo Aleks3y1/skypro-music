@@ -1,13 +1,33 @@
 "use client";
-import {createContext, ReactNode, useEffect, useRef, useState} from "react";
+import {createContext, Dispatch, ReactNode, RefObject, SetStateAction, useEffect, useRef, useState} from "react";
 import {Track} from "@/components/Interfaces/Interfaces";
 
-export const Context = createContext(null);
+interface ContextType {
+    trackList: { data: Track[] };
+    handlePlay: () => void;
+    togglePlaying: () => void;
+    audioRef: RefObject<HTMLAudioElement>;
+    setCurrentTrackNum: Dispatch<SetStateAction<number>>;
+    currentTrackNum: number;
+    currentTrack: Track | null;
+    setCurrentTrack: Dispatch<SetStateAction<Track | null>>;
+    isPlaying: boolean;
+    setIsPlaying: Dispatch<SetStateAction<boolean>>;
+    handlePlaylist: (track: Track) => void;
+    setVolume: Dispatch<SetStateAction<number>>;
+    setCurrentTime: Dispatch<SetStateAction<number>>;
+    duration: number;
+    currentTime: number;
+    handleLoop: () => void;
+    isLoop: boolean;
+}
 
-export const ContextProvider = ({children, trackList}: { children: ReactNode, trackList: Track[] }) => {
+export const Context = createContext<ContextType | null>(null);
+
+export const ContextProvider = ({children, trackList}: { children: ReactNode, trackList: { data: Track[] } }) => {
     const audioRef = useRef<HTMLAudioElement>(null);
     const [currentTrackNum, setCurrentTrackNum] = useState(0);
-    const [currentTrack, setCurrentTrack] = useState(trackList.data[0] || null);
+    const [currentTrack, setCurrentTrack] = useState<Track | null>(trackList.data[0] || null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [volume, setVolume] = useState(0.5);
     const [currentTime, setCurrentTime] = useState(0);
@@ -40,7 +60,7 @@ export const ContextProvider = ({children, trackList}: { children: ReactNode, tr
         }
     };
 
-    const handlePlaylist = (track) => {
+    const handlePlaylist = (track: Track) => {
         const audio = audioRef.current;
         if (track && audio) {
             setIsPlaying(false);

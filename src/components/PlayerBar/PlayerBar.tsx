@@ -6,6 +6,12 @@ import {UseContext} from "@/hooks/UseContext";
 import ProgressBar from "@/components/ProgressBar/ProgressBar";
 
 export default function PlayerBar({trackList}: { trackList: Track[] }) {
+    const context = UseContext();
+
+    if (!context) {
+        return <div>Контекст не доступен</div>;
+    }
+
     const {
         audioRef,
         handlePlay,
@@ -18,26 +24,31 @@ export default function PlayerBar({trackList}: { trackList: Track[] }) {
         handleLoop,
         isPlaying,
         isLoop
-    } = UseContext();
+    } = context;
 
     const play = "/img/icon/sprite.svg#icon-play";
 
     const notReleased = () => {
         return alert('Ещё не реализовано');
-    }
+    };
 
     return (
         <div className={styles.bar}>
             <div className={styles.bar__content}>
-                <audio ref={audioRef}
-                       src={currentTrack.track_file}
-                       onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
+                <audio
+                    ref={audioRef}
+                    src={currentTrack?.track_file || ""}
+                    onTimeUpdate={(e: React.SyntheticEvent<HTMLAudioElement>) => setCurrentTime(e.currentTarget.currentTime)}
                 />
                 <ProgressBar
                     max={duration}
                     value={currentTime}
                     step={0.01}
-                    onChange={(e) => audioRef.current.currentTime = e.target.value}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        if (audioRef.current) {
+                            audioRef.current.currentTime = parseFloat(e.target.value);
+                        }
+                    }}
                     currentTime={currentTime}
                     duration={duration}
                 />
@@ -100,11 +111,11 @@ export default function PlayerBar({trackList}: { trackList: Track[] }) {
                                 </div>
                                 <div className={styles.trackPlay__author}>
                                     <Link className={styles.trackPlay__authorLink} href="http://"
-                                    >{currentTrack.name}</Link>
+                                    >{currentTrack?.name}</Link>
                                 </div>
                                 <div className={styles.trackPlay__album}>
                                     <Link className={styles.trackPlay__albumLink}
-                                          href="http://">{currentTrack.author}</Link>
+                                          href="http://">{currentTrack?.author}</Link>
                                 </div>
                             </div>
 
@@ -139,7 +150,7 @@ export default function PlayerBar({trackList}: { trackList: Track[] }) {
                                     min="0"
                                     max="1"
                                     step="0.01"
-                                    onChange={(e) => setVolume(e.target.value)}
+                                    onChange={(e) => setVolume(parseFloat(e.target.value))}
                                 />
                             </div>
                         </div>
