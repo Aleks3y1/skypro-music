@@ -3,7 +3,7 @@ import {createContext, Dispatch, ReactNode, RefObject, SetStateAction, useEffect
 import {Track} from "@/components/Interfaces/Interfaces";
 
 interface ContextType {
-    trackList: { data: Track[] };
+    trackList: Track[];
     handlePlay: () => void;
     togglePlaying: () => void;
     audioRef: RefObject<HTMLAudioElement>;
@@ -24,10 +24,10 @@ interface ContextType {
 
 export const Context = createContext<ContextType | null>(null);
 
-export const ContextProvider = ({children, trackList}: { children: ReactNode, trackList: { data: Track[] } }) => {
+export const ContextProvider = ({children, trackList}: { children: ReactNode, trackList: Track[] }) => {
     const audioRef = useRef<HTMLAudioElement>(null);
     const [currentTrackNum, setCurrentTrackNum] = useState(0);
-    const [currentTrack, setCurrentTrack] = useState<Track | null>(trackList.data[0] || null);
+    const [currentTrack, setCurrentTrack] = useState<Track | null>(trackList[0] || null);
     const [isPlaying, setIsPlaying] = useState(false);
     const [volume, setVolume] = useState(0.5);
     const [currentTime, setCurrentTime] = useState(0);
@@ -51,12 +51,12 @@ export const ContextProvider = ({children, trackList}: { children: ReactNode, tr
     };
 
     const handlePlay = () => {
-        if (currentTrackNum < trackList.data.length - 1 && !audioRef.current?.loop) {
+        if (currentTrackNum < trackList.length - 1 && !audioRef.current?.loop) {
             setCurrentTrackNum(currentTrackNum + 1);
-            setCurrentTrack(trackList.data[currentTrackNum + 1]);
+            setCurrentTrack(trackList[currentTrackNum + 1]);
         } else {
             setCurrentTrackNum(0);
-            setCurrentTrack(trackList.data[0]);
+            setCurrentTrack(trackList[0]);
         }
     };
 
@@ -103,7 +103,7 @@ export const ContextProvider = ({children, trackList}: { children: ReactNode, tr
     }, [volume]);
 
     useEffect(() => {
-        setCurrentTrack(trackList.data[currentTrackNum]);
+        setCurrentTrack(trackList[currentTrackNum]);
     }, [trackList, currentTrackNum]);
 
     useEffect(() => {

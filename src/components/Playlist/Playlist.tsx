@@ -4,27 +4,21 @@ import Link from "next/link";
 import {Track} from "@/components/Interfaces/Interfaces";
 import {UseContext} from "@/hooks/UseContext";
 
-interface TrackListProps {
-    data: Track[];
-}
-
-export default function Playlist({trackList}: { trackList: TrackListProps }) {
+export default function Playlist({trackList}: { trackList: Track[] }) {
     const formatDuration = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
         return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
     };
 
-    const {audioRef, currentTrack, handlePlaylist} = UseContext() || {};
+    const {handlePlaylist} = UseContext() || {};
 
     return (
         <div className={`${styles.content__playlist} ${styles.playlist}`}>
-            {Array.isArray(trackList.data) && trackList.data.length > 0 ? (
-                trackList.data.map((track, index) => (
-                    <div key={track.id || index} className={styles.playlist__item}>
-                        {audioRef && currentTrack && (
-                            <audio ref={audioRef} src={currentTrack.track_file}/>
-                        )}
+            {Array.isArray(trackList) && trackList.length > 0 ? (
+                trackList.map((track, index) => (
+                    <div key={track.id || index} className={styles.playlist__item}
+                         onClick={() => handlePlaylist && handlePlaylist(track)}>
                         <div className={`${styles.playlist__track} ${styles.track}`}>
                             <div className={styles.track__title}>
                                 <div className={styles.track__titleImage}>
