@@ -8,7 +8,6 @@ interface MainProps {
 }
 
 export default function MainCenterBlock({trackList}: MainProps) {
-    console.log(trackList);
     return (
         <div className={`${styles.main__centerblock} ${styles.centerblock}`}>
             <div className={`${styles.centerblock__search} ${styles.search}`}>

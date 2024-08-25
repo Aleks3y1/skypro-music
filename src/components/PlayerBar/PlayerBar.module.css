@@ -94,6 +94,11 @@
     padding: 0 92px 0 0;
 }
 
+._btnStyle:hover svg {
+    fill: transparent;
+    stroke: #696969;
+    cursor: pointer;
+}
 
 
 .player__btnPrev,
@@ -108,6 +113,7 @@
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
+    cursor: pointer;
 }
 
 .player__btnPrev {

@@ -3,23 +3,23 @@ import styles from "@/components/Filter/Filter.module.css";
 import {useState} from "react";
 import {Track} from "@/components/Interfaces/Interfaces";
 
-export default function Filter({trackList}: {trackList: Track[]}) {
+export default function Filter({trackList}: { trackList: Track[] }) {
     const [isVisible, setIsVisible] = useState(false);
-    const handleOnChange = (event: React.MouseEvent<HTMLDivElement>) => {
+    const handleOnChange = () => {
         setIsVisible(!isVisible);
         setIsOpen(false);
         setIsVision(false);
     }
 
     const [isOpen, setIsOpen] = useState(false);
-    const handleClose = (event: React.MouseEvent<HTMLDivElement>) => {
+    const handleClose = () => {
         setIsOpen(!isOpen);
         setIsVisible(false);
         setIsVision(false);
     }
 
     const [isVision, setIsVision] = useState(false);
-    const handleOnClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    const handleOnClick = () => {
         setIsVision(!isVision);
         setIsOpen(false);
         setIsVisible(false);
@@ -33,7 +33,7 @@ export default function Filter({trackList}: {trackList: Track[]}) {
                 исполнителю
                 {<div className={styles.filter__window} style={{visibility: isVisible ? "visible" : "hidden"}}>
                     <div className={styles.filter__window__content}>
-                        {trackList.data?.map((track, numb) => (
+                        {trackList.map((track, numb) => (
                             <div key={track.id || numb} className={styles.filter__text}>{track.name}</div>
                         ))}
                     </div>
@@ -55,7 +55,7 @@ export default function Filter({trackList}: {trackList: Track[]}) {
                  onClick={handleOnClick}>жанру
                 {<div className={styles.filter__window} style={{visibility: isVision ? "visible" : "hidden"}}>
                     <div className={styles.filter__window__content}>
-                        {trackList.data?.map((track, numb) => (
+                        {trackList.map((track, numb) => (
                             <div key={track.id || numb} className={styles.filter__text}>{track.genre}</div>
                         ))}
                     </div>

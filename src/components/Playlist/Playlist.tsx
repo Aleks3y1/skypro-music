@@ -2,7 +2,7 @@
 import styles from "@/components/Playlist/Playlist.module.css";
 import Link from "next/link";
 import {Track} from "@/components/Interfaces/Interfaces";
-
+import {UseContext} from "@/hooks/UseContext";
 
 export default function Playlist({trackList}: { trackList: Track[] }) {
     const formatDuration = (seconds: number) => {
@@ -11,11 +11,14 @@ export default function Playlist({trackList}: { trackList: Track[] }) {
         return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
     };
 
+    const {handlePlaylist} = UseContext() || {};
+
     return (
         <div className={`${styles.content__playlist} ${styles.playlist}`}>
-            {Array.isArray(trackList.data) && trackList.data.length > 0 ? (
-                trackList.data?.map((track, index) => (
-                    <div key={track.id || index} className={styles.playlist__item}>
+            {Array.isArray(trackList) && trackList.length > 0 ? (
+                trackList.map((track, index) => (
+                    <div key={track.id || index} className={styles.playlist__item}
+                         onClick={() => handlePlaylist && handlePlaylist(track)}>
                         <div className={`${styles.playlist__track} ${styles.track}`}>
                             <div className={styles.track__title}>
                                 <div className={styles.track__titleImage}>
@@ -23,18 +26,17 @@ export default function Playlist({trackList}: { trackList: Track[] }) {
                                         <use xlinkHref="/img/icon/sprite.svg#icon-note"></use>
                                     </svg>
                                 </div>
-                                <div className={styles.track__titleText}>
-                                    <Link className={styles.track__titleLink} href="http://"
-                                    >{track.name} <span className={styles.track__titleSpan}></span
-                                    ></Link>
+                                <div className={styles.track__titleText} onClick={() => handlePlaylist?.(track)}>
+                                    <Link className={styles.track__titleLink} href="#">
+                                        {track.name} <span className={styles.track__titleSpan}></span>
+                                    </Link>
                                 </div>
                             </div>
                             <div className={styles.track__author}>
-                                <Link className={styles.track__authorLink} href="http://">{track.author}</Link>
+                                <Link className={styles.track__authorLink} href="#">{track.author}</Link>
                             </div>
                             <div className={styles.track__album}>
-                                <Link className={styles.track__albumLink} href="http://"
-                                >{track.album}</Link>
+                                <Link className={styles.track__albumLink} href="#">{track.album}</Link>
                             </div>
                             <div className={styles.track__time}>
                                 <svg className={styles.track__timeSvg}>
@@ -47,7 +49,7 @@ export default function Playlist({trackList}: { trackList: Track[] }) {
                     </div>
                 ))
             ) : (
-                <div>Треки не найдены</div> // Выводится сообщение, если треков нет
+                <div>Треки не найдены</div>
             )}
         </div>
     );
