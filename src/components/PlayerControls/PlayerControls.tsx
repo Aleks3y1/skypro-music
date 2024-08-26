@@ -1,5 +1,7 @@
 import styles from "@/components/PlayerBar/PlayerBar.module.css";
 import {UseContext} from "@/hooks/UseContext";
+import {useAppDispatch, useAppSelector} from "@/store/store";
+import {setCurrentTrackId, setPaused} from "@/store/features/player/playerSlice";
 
 export default function PlayerControls({}) {
     const notReleased = () => {
@@ -12,9 +14,15 @@ export default function PlayerControls({}) {
         return <div>Контекст не доступен</div>;
     }
 
-    const {togglePlaying, isPlaying, handleLoop, isLoop} = context;
+    const {togglePlaying, isPlaying, handleLoop, isLoop, currentTrack} = context;
 
     const play = "/img/icon/sprite.svg#icon-play";
+
+    const dispatch = useAppDispatch();
+    const currentTrackId = useAppSelector((state) => state.player.currentTrackId);
+    const paused = useAppSelector((state) => state.player.isPaused);
+    const isPlay = useAppSelector((state) => state.player.isPlaying);
+
 
     return (
         <div className={styles.player__controls}>
@@ -23,7 +31,13 @@ export default function PlayerControls({}) {
                     <use xlinkHref="/img/icon/sprite.svg#icon-prev"></use>
                 </svg>
             </div>
-            <div className={`${styles.player__btnPlay} ${styles._btnStyle}`} onClick={togglePlaying}>
+            <div className={`${styles.player__btnPlay} ${styles._btnStyle}`} onClick={() => {
+                togglePlaying();
+                if (currentTrack) {
+                    dispatch(setCurrentTrackId(currentTrack._id));
+                    dispatch(isPlaying ? setPaused(true) : setPaused(false));
+                }
+            }}>
                 {isPlaying ? (
                     <svg width="15" height="19" viewBox="0 0 15 19" fill="none"
                          xmlns="http://www.w3.org/2000/svg">
@@ -36,7 +50,9 @@ export default function PlayerControls({}) {
                     </svg>
                 )}
             </div>
-            <div className={`${styles.player__btnNext} ${styles._btnStyle}`} onClick={notReleased}>
+            <div className={`${styles.player__btnNext} ${styles._btnStyle}`} onClick={() => {
+                notReleased();
+            }}>
                 <svg className={styles.player__btnNextSvg}>
                     <use xlinkHref="/img/icon/sprite.svg#icon-next"></use>
                 </svg>

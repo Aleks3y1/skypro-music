@@ -3,6 +3,8 @@ import styles from "@/components/Playlist/Playlist.module.css";
 import Link from "next/link";
 import {Track} from "@/components/Interfaces/Interfaces";
 import {UseContext} from "@/hooks/UseContext";
+import {useAppDispatch, useAppSelector} from "@/store/store";
+import {setCurrentTrackId, setPaused} from "@/store/features/player/playerSlice";
 
 export default function Playlist({trackList}: { trackList: Track[] }) {
     const formatDuration = (seconds: number) => {
@@ -11,22 +13,39 @@ export default function Playlist({trackList}: { trackList: Track[] }) {
         return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
     };
 
+    const dispatch = useAppDispatch();
+    const currentTrackId = useAppSelector((state) => state.player.currentTrackId);
+    const paused = useAppSelector((state) => state.player.isPaused);
+    const isPlaying = useAppSelector((state) => state.player.isPlaying);
+
     const {handlePlaylist} = UseContext() || {};
 
     return (
         <div className={`${styles.content__playlist} ${styles.playlist}`}>
             {Array.isArray(trackList) && trackList.length > 0 ? (
                 trackList.map((track, index) => (
-                    <div key={track.id || index} className={styles.playlist__item}
-                         onClick={() => handlePlaylist && handlePlaylist(track)}>
+                    <div key={track._id || index} className={styles.playlist__item}
+                         onClick={() => {
+                             handlePlaylist && handlePlaylist(track);
+                             dispatch(setCurrentTrackId(track._id));
+                             dispatch(setPaused(false));
+                         }
+                         }>
                         <div className={`${styles.playlist__track} ${styles.track}`}>
                             <div className={styles.track__title}>
                                 <div className={styles.track__titleImage}>
                                     <svg className={styles.track__titleSvg}>
                                         <use xlinkHref="/img/icon/sprite.svg#icon-note"></use>
                                     </svg>
+                                    {String(currentTrackId) === String(track._id) && (
+                                        <span
+                                            className={`${styles.playingDot} ${paused ? styles.vibrating : ''}`}/>
+                                    )}
                                 </div>
-                                <div className={styles.track__titleText} onClick={() => handlePlaylist?.(track)}>
+                                <div className={styles.track__titleText} onClick={() => {
+                                    handlePlaylist?.(track);
+                                    dispatch(setCurrentTrackId(track._id));
+                                }}>
                                     <Link className={styles.track__titleLink} href="#">
                                         {track.name} <span className={styles.track__titleSpan}></span>
                                     </Link>
@@ -42,8 +61,9 @@ export default function Playlist({trackList}: { trackList: Track[] }) {
                                 <svg className={styles.track__timeSvg}>
                                     <use xlinkHref="/img/icon/sprite.svg#icon-like"></use>
                                 </svg>
-                                <span
-                                    className={styles.track__timeText}>{formatDuration(track.duration_in_seconds)}</span>
+                                <span className={styles.track__timeText}>
+                                    {formatDuration(track.duration_in_seconds)}
+                                </span>
                             </div>
                         </div>
                     </div>
