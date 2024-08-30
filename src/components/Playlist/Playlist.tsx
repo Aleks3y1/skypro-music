@@ -4,7 +4,9 @@ import Link from "next/link";
 import {Track} from "@/components/Interfaces/Interfaces";
 import {UseContext} from "@/hooks/UseContext";
 import {useAppDispatch, useAppSelector} from "@/store/store";
-import {setCurrentTrackId, setPaused} from "@/store/features/player/playerSlice";
+import {fetchTracks, setCurrentTrackId, setPaused, setTrackArray} from "@/store/features/player/playerSlice";
+import {useEffect} from "react";
+
 
 export default function Playlist({trackList}: { trackList: Track[] }) {
     const formatDuration = (seconds: number) => {
@@ -16,9 +18,20 @@ export default function Playlist({trackList}: { trackList: Track[] }) {
     const dispatch = useAppDispatch();
     const currentTrackId = useAppSelector((state) => state.player.currentTrackId);
     const paused = useAppSelector((state) => state.player.isPaused);
-    const isPlaying = useAppSelector((state) => state.player.isPlaying);
 
     const {handlePlaylist} = UseContext() || {};
+
+    useEffect(() => {
+        const loadTracks = async () => {
+            try {
+                const response = await dispatch(fetchTracks()).unwrap();
+                dispatch(setTrackArray(response));
+            } catch (errorText) {
+                console.error('Ошибка при загрузке треков:', errorText);
+            }
+        };
+        loadTracks();
+    }, [dispatch]);
 
     return (
         <div className={`${styles.content__playlist} ${styles.playlist}`}>

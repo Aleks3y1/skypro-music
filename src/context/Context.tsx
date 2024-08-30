@@ -137,7 +137,7 @@ export const ContextProvider = ({children, trackList}: { children: ReactNode, tr
                 duration,
                 currentTime,
                 handleLoop,
-                isLoop
+                isLoop,
             }}>
             {children}
         </Context.Provider>
