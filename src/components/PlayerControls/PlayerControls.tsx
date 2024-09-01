@@ -2,7 +2,13 @@ import {useEffect, useState} from "react";
 import styles from "@/components/PlayerBar/PlayerBar.module.css";
 import {UseContext} from "@/hooks/UseContext";
 import {useAppDispatch, useAppSelector} from "@/store/store";
-import {setCurrentTrackId, setIsPlaying, setPaused} from "@/store/features/player/playerSlice";
+import {
+    setCurrentTrackId,
+    setCurrentTrackNum,
+    setIsLoop,
+    setIsPlaying,
+    setPaused
+} from "@/store/features/player/playerSlice";
 import {Track} from "@/components/Interfaces/Interfaces";
 import ShuffledSVG from "@/components/ShuffledSVG/ShuffledSVG";
 import RepeatSVG from "@/components/RepeatSVG/RepeatSVG";
@@ -14,20 +20,18 @@ export default function PlayerControls() {
     }
 
     const {
-        isLoop,
         currentTrack,
         audioRef,
         setCurrentTrack,
         trackList,
-        currentTrackNum,
-        setCurrentTrackNum,
-        setIsLoop,
     } = context;
 
     const dispatch = useAppDispatch();
     const currentTrackId = useAppSelector((state) => state.player.currentTrackId);
     const isPlaying = useAppSelector((state) => state.player.isPlaying);
     const volume = useAppSelector((state) => state.player.volume);
+    const isLoop = useAppSelector((state) => state.player.isLoop);
+    const currentTrackNum = useAppSelector((state) => state.player.currentTrackNum);
     const [newArr, setNewArr] = useState<Track[]>([]);
     const [isShuffled, setIsShuffled] = useState(false);
     const [isNext, setNext] = useState(false);
@@ -48,33 +52,30 @@ export default function PlayerControls() {
     };
 
     const handlePlay = () => {
-        if (currentTrackNum < trackList.length - 1 && !audioRef.current?.loop) {
-            setCurrentTrackNum(currentTrackNum + 1);
-            setCurrentTrack(trackList[currentTrackNum + 1]);
+        if (Number(currentTrackNum) < trackList.length - 1 && !audioRef.current?.loop) {
+            dispatch(setCurrentTrackNum(Number(currentTrackNum) + 1));
+            setCurrentTrack(trackList[Number(currentTrackNum) + 1]);
         } else {
-            setCurrentTrackNum(0);
+            dispatch(setCurrentTrackNum(0));
             setCurrentTrack(trackList[0]);
         }
     };
 
     const handleLoop = () => {
-        setIsLoop((prevLoop) => {
-            const newLoopState = !prevLoop;
-            if (audioRef.current) {
-                audioRef.current.loop = newLoopState;
-            }
-            return newLoopState;
-        });
+        dispatch(setIsLoop(!isLoop));
+        if (audioRef.current) {
+            audioRef.current.loop = !isLoop;
+        }
     };
 
     useEffect(() => {
         if (audioRef.current) {
-            audioRef.current.volume = volume;
+            audioRef.current.volume = Number(volume);
         }
     }, [volume]);
 
     useEffect(() => {
-        setCurrentTrack(trackList[currentTrackNum]);
+        setCurrentTrack(trackList[Number(currentTrackNum)]);
     }, [trackList, currentTrackNum]);
 
     useEffect(() => {

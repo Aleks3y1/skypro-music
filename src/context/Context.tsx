@@ -26,15 +26,9 @@ export const Context = createContext<ContextType | null>(null);
 
 export const ContextProvider = ({children, trackList}: { children: ReactNode, trackList: Track[] }) => {
     const audioRef = useRef<HTMLAudioElement>(null);
-    const [currentTrackNum, setCurrentTrackNum] = useState(0);
     const [currentTrack, setCurrentTrack] = useState<Track | null>(trackList[0] || null);
-    const [isPlaying, setIsPlaying] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
-    const [isLoop, setIsLoop] = useState(false);
-
     const duration = audioRef.current?.duration || 0;
-
-
 
 
     return (
@@ -42,17 +36,11 @@ export const ContextProvider = ({children, trackList}: { children: ReactNode, tr
             value={{
                 trackList,
                 audioRef,
-                setCurrentTrackNum,
-                currentTrackNum,
                 currentTrack,
                 setCurrentTrack,
-                isPlaying,
-                setIsPlaying,
                 setCurrentTime,
                 duration,
                 currentTime,
-                isLoop,
-                setIsLoop,
             }}>
             {children}
         </Context.Provider>

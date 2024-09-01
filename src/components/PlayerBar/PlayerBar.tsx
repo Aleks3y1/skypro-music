@@ -6,6 +6,7 @@ import PlayerControls from "@/components/PlayerControls/PlayerControls";
 import PlayerTrackPlay from "@/components/PlayerTrackPlay/PlayerTrackPlay";
 import Volume from "@/components/Volume/Volume";
 import {ChangeEvent, SyntheticEvent} from "react";
+import {useAppDispatch, useAppSelector} from "@/store/store";
 
 export default function PlayerBar() {
     const context = UseContext();
@@ -19,8 +20,11 @@ export default function PlayerBar() {
         currentTrack,
         setCurrentTime,
         duration,
-        currentTime,
+        currentTime
     } = context;
+
+    // const currentTime = useAppSelector((state) => state.player.currentTime);
+    // const dispatch = useAppDispatch();
 
     return (
         <div className={styles.bar}>

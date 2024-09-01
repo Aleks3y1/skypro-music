@@ -25,7 +25,7 @@ export default function Playlist({trackList}: { trackList: Track[] }) {
     const paused = useAppSelector((state) => state.player.isPaused);
 
 
-    const { setCurrentTrack, audioRef} = UseContext() || {};
+    const {setCurrentTrack, audioRef} = UseContext() || {};
 
     const handlePlaylist = (track: Track) => {
         const audio = audioRef.current;

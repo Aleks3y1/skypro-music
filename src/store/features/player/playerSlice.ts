@@ -16,6 +16,9 @@ interface PlayerState {
     trackArray: Track[] | null;
     isShuffle: boolean;
     volume: number | null;
+    isLoop: boolean;
+    currentTime: number | null;
+    currentTrackNum: number | null;
 }
 
 const initialState: PlayerState = {
@@ -25,6 +28,9 @@ const initialState: PlayerState = {
     trackArray: null,
     isShuffle: false,
     volume: 0.5,
+    isLoop: false,
+    currentTime: 0,
+    currentTrackNum: 0,
 };
 
 const playerSlice = createSlice({
@@ -48,8 +54,16 @@ const playerSlice = createSlice({
         },
         setVolume(state, action: PayloadAction<number | null>) {
             state.volume = action.payload;
+        },
+        setIsLoop(state, action: PayloadAction<boolean>) {
+            state.isLoop = action.payload;
+        },
+        setCurrentTime(state, action: PayloadAction<number | null>) {
+            state.currentTime = action.payload;
+        },
+        setCurrentTrackNum(state, action: PayloadAction<number | null>) {
+            state.currentTrackNum = action.payload;
         }
-
     },
     extraReducers: (builder) => {
         builder.addCase(fetchTracks.fulfilled, (state, action) => {
@@ -58,6 +72,6 @@ const playerSlice = createSlice({
     }
 });
 
-export const {setCurrentTrackId, setIsPlaying, setPaused, setTrackArray, setShuffle, setVolume} = playerSlice.actions;
+export const {setCurrentTrackId, setIsPlaying, setPaused, setTrackArray, setShuffle, setVolume, setIsLoop, setCurrentTime, setCurrentTrackNum} = playerSlice.actions;
 
 export const playerReducer = playerSlice.reducer;
