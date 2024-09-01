@@ -35,95 +35,13 @@ export const ContextProvider = ({children, trackList}: { children: ReactNode, tr
 
     const duration = audioRef.current?.duration || 0;
 
-    const togglePlaying = () => {
-        const audio = audioRef.current;
-        if (audio) {
-            if (isPlaying) {
-                audio.pause();
-            } else {
-                const playPromise = audio.play();
-                if (playPromise !== undefined) {
-                    playPromise.catch(error => console.log("Ошибка воспроизведения: ", error));
-                }
-            }
-            setIsPlaying(!isPlaying);
-        }
-    };
 
-    const handlePlay = () => {
-        if (currentTrackNum < trackList.length - 1 && !audioRef.current?.loop) {
-            setCurrentTrackNum(currentTrackNum + 1);
-            setCurrentTrack(trackList[currentTrackNum + 1]);
-        } else {
-            setCurrentTrackNum(0);
-            setCurrentTrack(trackList[0]);
-        }
-    };
 
-    const handlePlaylist = (track: Track) => {
-        const audio = audioRef.current;
-        if (track && audio) {
-            setIsPlaying(false);
-
-            const onCanPlay = () => {
-                audio.play().then(() => {
-                    setIsPlaying(true);
-                }).catch(error => {
-                    console.log("Ошибка воспроизведения: ", error);
-                    setIsPlaying(false);
-                });
-            };
-
-            audio.pause();
-            audio.src = track.track_file;
-            audio.removeEventListener('canplay', onCanPlay);
-            audio.addEventListener('canplay', onCanPlay);
-            audio.load();
-
-            setCurrentTrack(track);
-        } else {
-            console.log("Проблема с ссылкой на трек");
-        }
-    };
-
-    const handleLoop = () => {
-        setIsLoop((prevLoop) => {
-            const newLoopState = !prevLoop;
-            if (audioRef.current) {
-                audioRef.current.loop = newLoopState;
-            }
-            return newLoopState;
-        });
-    };
-
-    useEffect(() => {
-        if (audioRef.current) {
-            audioRef.current.volume = volume;
-        }
-    }, [volume]);
-
-    useEffect(() => {
-        setCurrentTrack(trackList[currentTrackNum]);
-    }, [trackList, currentTrackNum]);
-
-    useEffect(() => {
-        const audio = audioRef.current;
-        if (audio && currentTrack) {
-            audio.src = currentTrack.track_file;
-            audio.addEventListener("ended", handlePlay);
-
-            return () => {
-                audio.removeEventListener("ended", handlePlay);
-            };
-        }
-    }, [currentTrack]);
 
     return (
         <Context.Provider
             value={{
                 trackList,
-                handlePlay,
-                togglePlaying,
                 audioRef,
                 setCurrentTrackNum,
                 currentTrackNum,
@@ -131,13 +49,13 @@ export const ContextProvider = ({children, trackList}: { children: ReactNode, tr
                 setCurrentTrack,
                 isPlaying,
                 setIsPlaying,
-                handlePlaylist,
                 setVolume,
                 setCurrentTime,
                 duration,
                 currentTime,
-                handleLoop,
                 isLoop,
+                volume,
+                setIsLoop,
             }}>
             {children}
         </Context.Provider>

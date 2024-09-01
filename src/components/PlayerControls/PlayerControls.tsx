@@ -1,8 +1,8 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import styles from "@/components/PlayerBar/PlayerBar.module.css";
 import {UseContext} from "@/hooks/UseContext";
 import {useAppDispatch, useAppSelector} from "@/store/store";
-import {setCurrentTrackId, setPaused} from "@/store/features/player/playerSlice";
+import {setCurrentTrackId, setIsPlaying, setPaused} from "@/store/features/player/playerSlice";
 import {Track} from "@/components/Interfaces/Interfaces";
 import ShuffledSVG from "@/components/ShuffledSVG/ShuffledSVG";
 import RepeatSVG from "@/components/RepeatSVG/RepeatSVG";
@@ -14,22 +14,80 @@ export default function PlayerControls() {
     }
 
     const {
-        togglePlaying,
-        isPlaying,
-        handleLoop,
         isLoop,
         currentTrack,
         audioRef,
         setCurrentTrack,
         trackList,
-        setIsPlaying
+        currentTrackNum,
+        setCurrentTrackNum,
+        volume,
+        setIsLoop,
     } = context;
 
     const dispatch = useAppDispatch();
     const currentTrackId = useAppSelector((state) => state.player.currentTrackId);
+    const isPlaying = useAppSelector((state) => state.player.isPlaying);
     const [newArr, setNewArr] = useState<Track[]>([]);
     const [isShuffled, setIsShuffled] = useState(false);
     const [isNext, setNext] = useState(false);
+
+    const togglePlaying = () => {
+        const audio = audioRef.current;
+        if (audio) {
+            if (isPlaying) {
+                audio.pause();
+            } else {
+                const playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => console.log("Ошибка воспроизведения: ", error));
+                }
+            }
+            dispatch(setIsPlaying(!isPlaying));
+        }
+    };
+
+    const handlePlay = () => {
+        if (currentTrackNum < trackList.length - 1 && !audioRef.current?.loop) {
+            setCurrentTrackNum(currentTrackNum + 1);
+            setCurrentTrack(trackList[currentTrackNum + 1]);
+        } else {
+            setCurrentTrackNum(0);
+            setCurrentTrack(trackList[0]);
+        }
+    };
+
+    const handleLoop = () => {
+        setIsLoop((prevLoop) => {
+            const newLoopState = !prevLoop;
+            if (audioRef.current) {
+                audioRef.current.loop = newLoopState;
+            }
+            return newLoopState;
+        });
+    };
+
+    useEffect(() => {
+        if (audioRef.current) {
+            audioRef.current.volume = volume;
+        }
+    }, [volume]);
+
+    useEffect(() => {
+        setCurrentTrack(trackList[currentTrackNum]);
+    }, [trackList, currentTrackNum]);
+
+    useEffect(() => {
+        const audio = audioRef.current;
+        if (audio && currentTrack) {
+            audio.src = currentTrack.track_file;
+            audio.addEventListener("ended", handlePlay);
+
+            return () => {
+                audio.removeEventListener("ended", handlePlay);
+            };
+        }
+    }, [currentTrack]);
 
     const nextTrack = (num: number) => {
         console.log(currentTrackId);
@@ -56,7 +114,7 @@ export default function PlayerControls() {
             const onCanPlay = () => {
                 audio.play().then(() => {
                     dispatch(setPaused(false));
-                    setIsPlaying(true);
+                    dispatch(setIsPlaying(true));
                 }).catch(error => {
                     console.log("Ошибка воспроизведения: ", error);
                     dispatch(setPaused(true));

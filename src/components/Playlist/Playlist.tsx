@@ -4,7 +4,12 @@ import Link from "next/link";
 import {Track} from "@/components/Interfaces/Interfaces";
 import {UseContext} from "@/hooks/UseContext";
 import {useAppDispatch, useAppSelector} from "@/store/store";
-import {fetchTracks, setCurrentTrackId, setPaused, setTrackArray} from "@/store/features/player/playerSlice";
+import {
+    fetchTracks,
+    setCurrentTrackId, setIsPlaying,
+    setPaused,
+    setTrackArray
+} from "@/store/features/player/playerSlice";
 import {useEffect} from "react";
 
 
@@ -19,7 +24,34 @@ export default function Playlist({trackList}: { trackList: Track[] }) {
     const currentTrackId = useAppSelector((state) => state.player.currentTrackId);
     const paused = useAppSelector((state) => state.player.isPaused);
 
-    const {handlePlaylist} = UseContext() || {};
+
+    const { setCurrentTrack, audioRef} = UseContext() || {};
+
+    const handlePlaylist = (track: Track) => {
+        const audio = audioRef.current;
+        if (track && audio) {
+            dispatch(setIsPlaying(false));
+
+            const onCanPlay = () => {
+                audio.play().then(() => {
+                    dispatch(setIsPlaying(true));
+                }).catch(error => {
+                    console.log("Ошибка воспроизведения: ", error);
+                    dispatch(setIsPlaying(false));
+                });
+            };
+
+            audio.pause();
+            audio.src = track.track_file;
+            audio.removeEventListener('canplay', onCanPlay);
+            audio.addEventListener('canplay', onCanPlay);
+            audio.load();
+
+            setCurrentTrack(track);
+        } else {
+            console.log("Проблема с ссылкой на трек");
+        }
+    };
 
     useEffect(() => {
         const loadTracks = async () => {
