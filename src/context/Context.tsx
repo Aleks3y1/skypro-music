@@ -29,7 +29,6 @@ export const ContextProvider = ({children, trackList}: { children: ReactNode, tr
     const [currentTrackNum, setCurrentTrackNum] = useState(0);
     const [currentTrack, setCurrentTrack] = useState<Track | null>(trackList[0] || null);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [volume, setVolume] = useState(0.5);
     const [currentTime, setCurrentTime] = useState(0);
     const [isLoop, setIsLoop] = useState(false);
 
@@ -49,12 +48,10 @@ export const ContextProvider = ({children, trackList}: { children: ReactNode, tr
                 setCurrentTrack,
                 isPlaying,
                 setIsPlaying,
-                setVolume,
                 setCurrentTime,
                 duration,
                 currentTime,
                 isLoop,
-                volume,
                 setIsLoop,
             }}>
             {children}

@@ -21,13 +21,13 @@ export default function PlayerControls() {
         trackList,
         currentTrackNum,
         setCurrentTrackNum,
-        volume,
         setIsLoop,
     } = context;
 
     const dispatch = useAppDispatch();
     const currentTrackId = useAppSelector((state) => state.player.currentTrackId);
     const isPlaying = useAppSelector((state) => state.player.isPlaying);
+    const volume = useAppSelector((state) => state.player.volume);
     const [newArr, setNewArr] = useState<Track[]>([]);
     const [isShuffled, setIsShuffled] = useState(false);
     const [isNext, setNext] = useState(false);

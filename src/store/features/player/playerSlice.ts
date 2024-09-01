@@ -15,6 +15,7 @@ interface PlayerState {
     isPaused: boolean;
     trackArray: Track[] | null;
     isShuffle: boolean;
+    volume: number | null;
 }
 
 const initialState: PlayerState = {
@@ -23,6 +24,7 @@ const initialState: PlayerState = {
     isPaused: false,
     trackArray: null,
     isShuffle: false,
+    volume: 0.5,
 };
 
 const playerSlice = createSlice({
@@ -43,6 +45,9 @@ const playerSlice = createSlice({
         },
         setShuffle(state, action: PayloadAction<boolean>) {
             state.isShuffle = action.payload;
+        },
+        setVolume(state, action: PayloadAction<number | null>) {
+            state.volume = action.payload;
         }
 
     },
@@ -53,6 +58,6 @@ const playerSlice = createSlice({
     }
 });
 
-export const {setCurrentTrackId, setIsPlaying, setPaused, setTrackArray, setShuffle} = playerSlice.actions;
+export const {setCurrentTrackId, setIsPlaying, setPaused, setTrackArray, setShuffle, setVolume} = playerSlice.actions;
 
 export const playerReducer = playerSlice.reducer;
