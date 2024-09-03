@@ -6,14 +6,16 @@ import {UseContext} from "@/hooks/UseContext";
 import {useAppDispatch, useAppSelector} from "@/store/store";
 import {
     fetchTracks,
-    setCurrentTrackId, setIsPlaying,
+    setCurrentTrack,
+    setCurrentTrackId,
+    setIsPlaying,
     setPaused,
-    setTrackArray
+    setTrackArray,
 } from "@/store/features/player/playerSlice";
 import {useEffect} from "react";
 
 
-export default function Playlist({trackList}: { trackList: Track[] }) {
+export default function Playlist() {
     const formatDuration = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
@@ -23,12 +25,12 @@ export default function Playlist({trackList}: { trackList: Track[] }) {
     const dispatch = useAppDispatch();
     const currentTrackId = useAppSelector((state) => state.player.currentTrackId);
     const paused = useAppSelector((state) => state.player.isPaused);
+    const trackArray = useAppSelector((state) => state.player.trackArray);
 
-
-    const {setCurrentTrack, audioRef} = UseContext() || {};
+    const {audioRef} = UseContext() || {};
 
     const handlePlaylist = (track: Track) => {
-        const audio = audioRef.current;
+        const audio = audioRef?.current;
         if (track && audio) {
             dispatch(setIsPlaying(false));
 
@@ -46,8 +48,7 @@ export default function Playlist({trackList}: { trackList: Track[] }) {
             audio.removeEventListener('canplay', onCanPlay);
             audio.addEventListener('canplay', onCanPlay);
             audio.load();
-
-            setCurrentTrack(track);
+            dispatch(setCurrentTrack(track));
         } else {
             console.log("Проблема с ссылкой на трек");
         }
@@ -67,11 +68,11 @@ export default function Playlist({trackList}: { trackList: Track[] }) {
 
     return (
         <div className={`${styles.content__playlist} ${styles.playlist}`}>
-            {Array.isArray(trackList) && trackList.length > 0 ? (
-                trackList.map((track, index) => (
+            {Array.isArray(trackArray) && trackArray.length > 0 ? (
+                trackArray.map((track, index) => (
                     <div key={track._id || index} className={styles.playlist__item}
                          onClick={() => {
-                             handlePlaylist && handlePlaylist(track);
+                             handlePlaylist(track);
                              dispatch(setCurrentTrackId(track._id));
                              dispatch(setPaused(false));
                          }

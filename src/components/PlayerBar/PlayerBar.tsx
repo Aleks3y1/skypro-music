@@ -7,6 +7,7 @@ import PlayerTrackPlay from "@/components/PlayerTrackPlay/PlayerTrackPlay";
 import Volume from "@/components/Volume/Volume";
 import {ChangeEvent, SyntheticEvent} from "react";
 import {useAppDispatch, useAppSelector} from "@/store/store";
+import {setCurrentTime} from "@/store/features/player/playerSlice";
 
 export default function PlayerBar() {
     const context = UseContext();
@@ -17,14 +18,12 @@ export default function PlayerBar() {
 
     const {
         audioRef,
-        currentTrack,
-        setCurrentTime,
         duration,
-        currentTime
     } = context;
 
-    // const currentTime = useAppSelector((state) => state.player.currentTime);
-    // const dispatch = useAppDispatch();
+const currentTime = useAppSelector((state) => state.player.currentTime);
+const currentTrack = useAppSelector((state) => state.player.currentTrack);
+const dispatch = useAppDispatch();
 
     return (
         <div className={styles.bar}>
@@ -32,18 +31,18 @@ export default function PlayerBar() {
                 <audio
                     ref={audioRef}
                     src={currentTrack?.track_file || ""}
-                    onTimeUpdate={(e: SyntheticEvent<HTMLAudioElement>) => setCurrentTime(e.currentTarget.currentTime)}
+                    onTimeUpdate={(e: SyntheticEvent<HTMLAudioElement>) => dispatch(setCurrentTime(e.currentTarget.currentTime))}
                 />
                 <ProgressBar
                     max={duration}
-                    value={currentTime}
+                    value={Number(currentTime)}
                     step={0.01}
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
                         if (audioRef.current) {
                             audioRef.current.currentTime = parseFloat(e.target.value);
                         }
                     }}
-                    currentTime={currentTime}
+                    currentTime={Number(currentTime)}
                     duration={duration}
                 />
                 <div className={styles.bar__playerBlock}>

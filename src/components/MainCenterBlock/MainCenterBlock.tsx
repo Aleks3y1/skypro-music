@@ -1,13 +1,8 @@
 import styles from "@/components/MainCenterBlock/MainCenterBlock.module.css";
 import Filter from "@/components/Filter/Filter";
 import MainContent from "@/components/MainContent/MainContent";
-import {Track} from "@/components/Interfaces/Interfaces";
 
-interface MainProps {
-    trackList: Track[];
-}
-
-export default function MainCenterBlock({trackList}: MainProps) {
+export default function MainCenterBlock() {
     return (
         <div className={`${styles.main__centerblock} ${styles.centerblock}`}>
             <div className={`${styles.centerblock__search} ${styles.search}`}>
@@ -22,8 +17,8 @@ export default function MainCenterBlock({trackList}: MainProps) {
                 />
             </div>
             <h2 className={styles.centerblock__h2}>Треки</h2>
-            <Filter trackList={trackList}/>
-            <MainContent trackList={trackList}/>
+            <Filter/>
+            <MainContent/>
         </div>
     );
 }

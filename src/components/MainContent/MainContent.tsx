@@ -3,11 +3,11 @@ import Playlist from "@/components/Playlist/Playlist";
 import MainContentTitle from "@/components/MainContentTitle/MainContentTitle";
 import {Track} from "@/components/Interfaces/Interfaces";
 
-export default function MainContent({trackList}: {trackList: Track[]}) {
+export default function MainContent() {
     return (
         <div className={`${styles.centerblock__content} ${styles.playlistContent}`}>
             <MainContentTitle/>
-            <Playlist trackList={trackList}/>
+            <Playlist/>
         </div>
     );
 }

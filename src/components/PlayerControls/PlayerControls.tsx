@@ -3,6 +3,7 @@ import styles from "@/components/PlayerBar/PlayerBar.module.css";
 import {UseContext} from "@/hooks/UseContext";
 import {useAppDispatch, useAppSelector} from "@/store/store";
 import {
+    setCurrentTrack,
     setCurrentTrackId,
     setCurrentTrackNum,
     setIsLoop,
@@ -20,10 +21,7 @@ export default function PlayerControls() {
     }
 
     const {
-        currentTrack,
         audioRef,
-        setCurrentTrack,
-        trackList,
     } = context;
 
     const dispatch = useAppDispatch();
@@ -32,6 +30,8 @@ export default function PlayerControls() {
     const volume = useAppSelector((state) => state.player.volume);
     const isLoop = useAppSelector((state) => state.player.isLoop);
     const currentTrackNum = useAppSelector((state) => state.player.currentTrackNum);
+    const trackArray: Track[] = useAppSelector((state) => state.player.trackArray);
+    const currentTrack = useAppSelector((state) => state.player.currentTrack);
     const [newArr, setNewArr] = useState<Track[]>([]);
     const [isShuffled, setIsShuffled] = useState(false);
     const [isNext, setNext] = useState(false);
@@ -48,16 +48,19 @@ export default function PlayerControls() {
                 }
             }
             dispatch(setIsPlaying(!isPlaying));
+
         }
     };
 
     const handlePlay = () => {
-        if (Number(currentTrackNum) < trackList.length - 1 && !audioRef.current?.loop) {
-            dispatch(setCurrentTrackNum(Number(currentTrackNum) + 1));
-            setCurrentTrack(trackList[Number(currentTrackNum) + 1]);
-        } else {
-            dispatch(setCurrentTrackNum(0));
-            setCurrentTrack(trackList[0]);
+        if (trackArray && trackArray.length > 0) {
+            if (Number(currentTrackNum) < trackArray.length - 1 && !audioRef.current?.loop) {
+                dispatch(setCurrentTrackNum(Number(currentTrackNum) + 1));
+                dispatch(setCurrentTrack(trackArray[Number(currentTrackNum) + 1]));
+            } else {
+                dispatch(setCurrentTrackNum(0));
+                dispatch(setCurrentTrack(trackArray[0]));
+            }
         }
     };
 
@@ -75,8 +78,10 @@ export default function PlayerControls() {
     }, [volume]);
 
     useEffect(() => {
-        setCurrentTrack(trackList[Number(currentTrackNum)]);
-    }, [trackList, currentTrackNum]);
+        if (trackArray && trackArray.length > 0) {
+            setCurrentTrack(trackArray[Number(currentTrackNum)]);
+        }
+    }, [trackArray, currentTrackNum]);
 
     useEffect(() => {
         const audio = audioRef.current;
@@ -91,54 +96,52 @@ export default function PlayerControls() {
     }, [currentTrack]);
 
     const nextTrack = (num: number) => {
-        console.log(currentTrackId);
-        if (!trackList || currentTrackId === null) return;
+        if (trackArray && trackArray.length > 0) {
+            const arrTracks = newArr.length > 0 ? [...newArr] : [...trackArray];
+            const currentTrackIndex = arrTracks.findIndex(item => item._id === currentTrackId);
+            if (currentTrackIndex !== -1 && !(currentTrackIndex === trackArray.length - 1 && isNext)) {
+                let newTrackIndex = currentTrackIndex - num;
+                if (newTrackIndex < 0) {
+                    newTrackIndex = arrTracks.length - num;
+                }
 
-        const arrTracks = newArr.length > 0 ? [...newArr] : [...trackList];
+                const newTrack = arrTracks[newTrackIndex];
+                dispatch(setCurrentTrack(newTrack));
+                dispatch(setCurrentTrackId(newTrack._id));
+                dispatch(setPaused(true));
+                dispatch(isPlaying ? setPaused(true) : setPaused(false));
 
-        const currentTrackIndex = arrTracks.findIndex(item => item._id === currentTrackId);
-        if (currentTrackIndex === -1 || (currentTrackIndex === trackList.length - 1 && isNext)) return;
+                const audio = audioRef.current;
+                if (audio) {
+                    const onCanPlay = () => {
+                        audio.play().then(() => {
+                            dispatch(setPaused(false));
+                            dispatch(setIsPlaying(true));
+                        }).catch(error => {
+                            console.log("Ошибка воспроизведения: ", error);
+                            dispatch(setPaused(true));
+                        });
+                    };
 
-        let newTrackIndex = currentTrackIndex - num;
-        if (newTrackIndex < 0) {
-            newTrackIndex = arrTracks.length - num;
-        }
-
-        const newTrack = arrTracks[newTrackIndex];
-        setCurrentTrack(newTrack);
-        dispatch(setCurrentTrackId(newTrack._id));
-        dispatch(setPaused(true));
-        dispatch(isPlaying ? setPaused(true) : setPaused(false));
-
-        const audio = audioRef.current;
-        if (audio) {
-            const onCanPlay = () => {
-                audio.play().then(() => {
-                    dispatch(setPaused(false));
-                    dispatch(setIsPlaying(true));
-                }).catch(error => {
-                    console.log("Ошибка воспроизведения: ", error);
-                    dispatch(setPaused(true));
-                });
-            };
-
-            audio.pause();
-            audio.src = newTrack.track_file;
-            audio.removeEventListener('canplay', onCanPlay);
-            audio.addEventListener('canplay', onCanPlay);
-            audio.load();
-        } else {
-            console.log("Проблема с ссылкой на аудио элемент");
+                    audio.pause();
+                    audio.src = newTrack.track_file;
+                    audio.removeEventListener('canplay', onCanPlay);
+                    audio.addEventListener('canplay', onCanPlay);
+                    audio.load();
+                } else {
+                    console.log("Проблема с ссылкой на аудио элемент");
+                }
+            }
         }
     };
 
     const shuffle = () => {
         setIsShuffled(!isShuffled);
-        if (newArr.length === trackList.length) {
+        if (newArr.length === trackArray?.length) {
             setNewArr([]);
             return;
         }
-        const currArr = [...trackList];
+        const currArr: Track[] = [...trackArray];
         const shuffledArr: Track[] = [];
         while (currArr.length > 0) {
             const randomIndex = Math.floor(Math.random() * currArr.length);

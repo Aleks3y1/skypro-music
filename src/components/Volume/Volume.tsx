@@ -1,5 +1,4 @@
 import styles from "@/components/PlayerBar/PlayerBar.module.css";
-import {UseContext} from "@/hooks/UseContext";
 import {useDispatch} from "react-redux";
 import {setVolume} from "@/store/features/player/playerSlice";
 

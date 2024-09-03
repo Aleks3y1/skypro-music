@@ -5,11 +5,11 @@ import MainSidebar from "@/components/MainSidebar/MainSidebar";
 import {Track} from "@/components/Interfaces/Interfaces";
 
 
-export default function Main({trackList}: {trackList: Track[]}) {
+export default function Main() {
     return (
         <main className={styles.main}>
             <Navigation/>
-            <MainCenterBlock trackList={trackList}/>
+            <MainCenterBlock/>
             <MainSidebar/>
         </main>
     )

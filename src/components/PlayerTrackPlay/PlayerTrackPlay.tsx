@@ -1,15 +1,9 @@
 import styles from "@/components/PlayerBar/PlayerBar.module.css";
 import Link from "next/link";
-import {UseContext} from "@/hooks/UseContext";
+import {useAppSelector} from "@/store/store";
 
 export default function PlayerTrackPlay() {
-    const context = UseContext();
-
-    if (!context) {
-        return <div>Контекста не существует</div>
-    }
-
-    const {currentTrack} = context;
+    const currentTrack = useAppSelector((state) => state.player.currentTrack);
 
     return (
         <div className={`${styles.player__trackPlay} ${styles.trackPlay}`}>
