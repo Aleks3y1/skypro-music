@@ -27,7 +27,6 @@ export default function Playlist({audioRef}: { audioRef: RefObject<HTMLAudioElem
     const trackArray = useAppSelector((state) => state.player.trackArray);
 
     const handlePlaylist = (track: Track) => {
-        console.log(audioRef.current);
         const audio = audioRef?.current;
         if (track && audio) {
             dispatch(setIsPlaying(false));
@@ -46,6 +45,7 @@ export default function Playlist({audioRef}: { audioRef: RefObject<HTMLAudioElem
             audio.removeEventListener('canplay', onCanPlay);
             audio.addEventListener('canplay', onCanPlay);
             audio.load();
+            dispatch(setCurrentTrack(track));
         } else {
             console.log("Проблема с ссылкой на трек");
         }
