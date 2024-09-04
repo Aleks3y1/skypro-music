@@ -20,6 +20,7 @@ interface PlayerState {
     currentTime: number | null;
     currentTrackNum: number | null;
     currentTrack: Track | null;
+    duration: number | null;
 }
 
 const initialState: PlayerState = {
@@ -33,6 +34,7 @@ const initialState: PlayerState = {
     currentTime: 0,
     currentTrackNum: 0,
     currentTrack: null,
+    duration: null,
 };
 
 const playerSlice = createSlice({
@@ -69,6 +71,9 @@ const playerSlice = createSlice({
         setCurrentTrack(state, action: PayloadAction<Track>) {
             state.currentTrack = action.payload;
         },
+        setDuration(state, action: PayloadAction<number | null>) {
+            state.duration = action.payload;
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchTracks.fulfilled, (state, action) => {
@@ -90,7 +95,8 @@ export const {
     setIsLoop,
     setCurrentTime,
     setCurrentTrackNum,
-    setCurrentTrack
+    setCurrentTrack,
+    setDuration
 } = playerSlice.actions;
 
 export const playerReducer = playerSlice.reducer;

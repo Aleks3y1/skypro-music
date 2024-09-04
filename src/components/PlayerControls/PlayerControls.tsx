@@ -14,15 +14,15 @@ import {Track} from "@/components/Interfaces/Interfaces";
 import ShuffledSVG from "@/components/ShuffledSVG/ShuffledSVG";
 import RepeatSVG from "@/components/RepeatSVG/RepeatSVG";
 
-export default function PlayerControls() {
-    const context = UseContext();
-    if (!context) {
-        return <div>Контекст не доступен</div>;
-    }
-
-    const {
-        audioRef,
-    } = context;
+export default function PlayerControls({audioRef}: {audioRef: HTMLAudioElement}) {
+    // const context = UseContext();
+    // if (!context) {
+    //     return <div>Контекст не доступен</div>;
+    // }
+    //
+    // const {
+    //     audioRef,
+    // } = context;
 
     const dispatch = useAppDispatch();
     const currentTrackId = useAppSelector((state) => state.player.currentTrackId);
@@ -32,6 +32,7 @@ export default function PlayerControls() {
     const currentTrackNum = useAppSelector((state) => state.player.currentTrackNum);
     const trackArray: Track[] = useAppSelector((state) => state.player.trackArray);
     const currentTrack = useAppSelector((state) => state.player.currentTrack);
+    const duration = useAppSelector((state) => state.player.duration);
     const [newArr, setNewArr] = useState<Track[]>([]);
     const [isShuffled, setIsShuffled] = useState(false);
     const [isNext, setNext] = useState(false);

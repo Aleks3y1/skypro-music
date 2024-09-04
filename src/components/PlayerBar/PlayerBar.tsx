@@ -5,7 +5,7 @@ import ProgressBar from "@/components/ProgressBar/ProgressBar";
 import PlayerControls from "@/components/PlayerControls/PlayerControls";
 import PlayerTrackPlay from "@/components/PlayerTrackPlay/PlayerTrackPlay";
 import Volume from "@/components/Volume/Volume";
-import {ChangeEvent, SyntheticEvent} from "react";
+import {ChangeEvent, SyntheticEvent, useEffect, useRef} from "react";
 import {useAppDispatch, useAppSelector} from "@/store/store";
 import {setCurrentTime} from "@/store/features/player/playerSlice";
 
@@ -17,13 +17,16 @@ export default function PlayerBar() {
     }
 
     const {
-        audioRef,
-        duration,
+
     } = context;
 
-const currentTime = useAppSelector((state) => state.player.currentTime);
-const currentTrack = useAppSelector((state) => state.player.currentTrack);
-const dispatch = useAppDispatch();
+    const currentTime = useAppSelector((state) => state.player.currentTime);
+    const currentTrack = useAppSelector((state) => state.player.currentTrack);
+    const duration = useAppSelector((state) => state.player.duration);
+    const audioRef = useRef(null);
+    const dispatch = useAppDispatch();
+
+    console.log(duration);
 
     return (
         <div className={styles.bar}>
@@ -47,7 +50,7 @@ const dispatch = useAppDispatch();
                 />
                 <div className={styles.bar__playerBlock}>
                     <div className={`${styles.bar__player} ${styles.player}`}>
-                        <PlayerControls/>
+                        <PlayerControls audioRef={audioRef}/>
                         <PlayerTrackPlay/>
                     </div>
                     <Volume/>

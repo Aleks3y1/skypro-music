@@ -24,7 +24,7 @@ export default function Filter() {
         setIsOpen(false);
         setIsVisible(false);
     }
-    
+
     const trackArray = useAppSelector((state) => state.player.trackArray)
 
     return (
