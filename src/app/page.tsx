@@ -1,20 +1,19 @@
+"use client";
 import styles from "./page.module.css";
 import Main from "@/components/Main/Main";
 import PlayerBar from "@/components/PlayerBar/PlayerBar";
-import {ContextProvider} from "@/context/Context";
+import {useRef} from "react";
 
 
-export default async function Home() {
-
+export default function Home() {
+    const audioRef = useRef<HTMLAudioElement>(null);
     return (
-        <ContextProvider>
-            <div className={styles.wrapper}>
-                <div className={styles.container}>
-                    <Main/>
-                    <PlayerBar/>
-                    <footer className={styles.footer}></footer>
-                </div>
+        <div className={styles.wrapper}>
+            <div className={styles.container}>
+                <Main audioRef={audioRef}/>
+                <PlayerBar audioRef={audioRef}/>
+                <footer className={styles.footer}></footer>
             </div>
-        </ContextProvider>
+        </div>
     );
 }

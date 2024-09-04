@@ -2,7 +2,6 @@
 import styles from "@/components/Playlist/Playlist.module.css";
 import Link from "next/link";
 import {Track} from "@/components/Interfaces/Interfaces";
-import {UseContext} from "@/hooks/UseContext";
 import {useAppDispatch, useAppSelector} from "@/store/store";
 import {
     fetchTracks,
@@ -12,10 +11,10 @@ import {
     setPaused,
     setTrackArray,
 } from "@/store/features/player/playerSlice";
-import {useEffect} from "react";
+import {RefObject, useEffect} from "react";
 
 
-export default function Playlist() {
+export default function Playlist({audioRef}: { audioRef: RefObject<HTMLAudioElement> }) {
     const formatDuration = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
@@ -27,9 +26,8 @@ export default function Playlist() {
     const paused = useAppSelector((state) => state.player.isPaused);
     const trackArray = useAppSelector((state) => state.player.trackArray);
 
-    const {audioRef} = UseContext() || {};
-
     const handlePlaylist = (track: Track) => {
+        console.log(audioRef.current);
         const audio = audioRef?.current;
         if (track && audio) {
             dispatch(setIsPlaying(false));
@@ -48,7 +46,6 @@ export default function Playlist() {
             audio.removeEventListener('canplay', onCanPlay);
             audio.addEventListener('canplay', onCanPlay);
             audio.load();
-            dispatch(setCurrentTrack(track));
         } else {
             console.log("Проблема с ссылкой на трек");
         }

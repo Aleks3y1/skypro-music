@@ -1,11 +1,11 @@
-import {useEffect, useState} from "react";
+import {RefObject, useEffect, useState} from "react";
 import styles from "@/components/PlayerBar/PlayerBar.module.css";
-import {UseContext} from "@/hooks/UseContext";
 import {useAppDispatch, useAppSelector} from "@/store/store";
 import {
     setCurrentTrack,
     setCurrentTrackId,
     setCurrentTrackNum,
+    setDuration,
     setIsLoop,
     setIsPlaying,
     setPaused
@@ -14,16 +14,7 @@ import {Track} from "@/components/Interfaces/Interfaces";
 import ShuffledSVG from "@/components/ShuffledSVG/ShuffledSVG";
 import RepeatSVG from "@/components/RepeatSVG/RepeatSVG";
 
-export default function PlayerControls({audioRef}: {audioRef: HTMLAudioElement}) {
-    // const context = UseContext();
-    // if (!context) {
-    //     return <div>Контекст не доступен</div>;
-    // }
-    //
-    // const {
-    //     audioRef,
-    // } = context;
-
+export default function PlayerControls({audioRef}: { audioRef: RefObject<HTMLAudioElement> }) {
     const dispatch = useAppDispatch();
     const currentTrackId = useAppSelector((state) => state.player.currentTrackId);
     const isPlaying = useAppSelector((state) => state.player.isPlaying);
@@ -49,7 +40,6 @@ export default function PlayerControls({audioRef}: {audioRef: HTMLAudioElement})
                 }
             }
             dispatch(setIsPlaying(!isPlaying));
-
         }
     };
 
@@ -83,9 +73,12 @@ export default function PlayerControls({audioRef}: {audioRef: HTMLAudioElement})
             setCurrentTrack(trackArray[Number(currentTrackNum)]);
         }
     }, [trackArray, currentTrackNum]);
-
     useEffect(() => {
         const audio = audioRef.current;
+        const trackDuration = currentTrack?.duration_in_seconds ?? null;
+        if (trackDuration !== null) {
+            dispatch(setDuration(Number(currentTrack?.duration_in_seconds)));
+        }
         if (audio && currentTrack) {
             audio.src = currentTrack.track_file;
             audio.addEventListener("ended", handlePlay);
@@ -95,6 +88,7 @@ export default function PlayerControls({audioRef}: {audioRef: HTMLAudioElement})
             };
         }
     }, [currentTrack]);
+
 
     const nextTrack = (num: number) => {
         if (trackArray && trackArray.length > 0) {
