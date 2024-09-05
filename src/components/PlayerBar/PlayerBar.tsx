@@ -9,9 +9,7 @@ import {useAppDispatch, useAppSelector} from "@/store/store";
 import {setCurrentTime} from "@/store/features/player/playerSlice";
 
 export default function PlayerBar({audioRef}: { audioRef: RefObject<HTMLAudioElement> }) {
-    const currentTime = useAppSelector((state) => state.player.currentTime);
-    const currentTrack = useAppSelector((state) => state.player.currentTrack);
-    const duration = useAppSelector((state) => state.player.duration);
+    const {currentTime, currentTrack, duration} = useAppSelector((state) => state.player);
     const dispatch = useAppDispatch();
 
     return (

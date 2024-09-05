@@ -13,12 +13,12 @@ interface PlayerState {
     currentTrackId: number | null;
     isPlaying: boolean;
     isPaused: boolean;
-    trackArray: Track[] | null;
+    trackArray: Track[];
     isShuffle: boolean;
-    volume: number | null;
+    volume: number;
     isLoop: boolean;
-    currentTime: number | null;
-    currentTrackNum: number | null;
+    currentTime: number;
+    currentTrackNum: number;
     currentTrack: Track | null;
     duration: number | null;
 }
@@ -27,7 +27,7 @@ const initialState: PlayerState = {
     currentTrackId: null,
     isPlaying: false,
     isPaused: false,
-    trackArray: null,
+    trackArray: [],
     isShuffle: false,
     volume: 0.5,
     isLoop: false,

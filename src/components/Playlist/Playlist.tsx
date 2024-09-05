@@ -22,9 +22,7 @@ export default function Playlist({audioRef}: { audioRef: RefObject<HTMLAudioElem
     };
 
     const dispatch = useAppDispatch();
-    const currentTrackId = useAppSelector((state) => state.player.currentTrackId);
-    const paused = useAppSelector((state) => state.player.isPaused);
-    const trackArray = useAppSelector((state) => state.player.trackArray);
+    const {currentTrackId, isPaused, trackArray} = useAppSelector((state) => state.player);
 
     const handlePlaylist = (track: Track) => {
         const audio = audioRef?.current;
@@ -82,7 +80,7 @@ export default function Playlist({audioRef}: { audioRef: RefObject<HTMLAudioElem
                                     </svg>
                                     {String(currentTrackId) === String(track._id) && (
                                         <span
-                                            className={`${styles.playingDot} ${paused ? styles.vibrating : ''}`}/>
+                                            className={`${styles.playingDot} ${isPaused ? styles.vibrating : ''}`}/>
                                     )}
                                 </div>
                                 <div className={styles.track__titleText} onClick={() => {

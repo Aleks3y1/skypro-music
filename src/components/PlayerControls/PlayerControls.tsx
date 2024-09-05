@@ -16,14 +16,16 @@ import RepeatSVG from "@/components/RepeatSVG/RepeatSVG";
 
 export default function PlayerControls({audioRef}: { audioRef: RefObject<HTMLAudioElement> }) {
     const dispatch = useAppDispatch();
-    const currentTrackId = useAppSelector((state) => state.player.currentTrackId);
-    const isPlaying = useAppSelector((state) => state.player.isPlaying);
-    const volume = useAppSelector((state) => state.player.volume);
-    const isLoop = useAppSelector((state) => state.player.isLoop);
-    const currentTrackNum = useAppSelector((state) => state.player.currentTrackNum);
-    const trackArray: Track[] = useAppSelector((state) => state.player.trackArray);
-    const currentTrack = useAppSelector((state) => state.player.currentTrack);
-    const duration = useAppSelector((state) => state.player.duration);
+
+    const {
+        currentTrackId,
+        isPlaying,
+        volume,
+        isLoop,
+        currentTrackNum,
+        trackArray,
+        currentTrack
+    } = useAppSelector((state) => state.player);
     const [newArr, setNewArr] = useState<Track[]>([]);
     const [isShuffled, setIsShuffled] = useState(false);
     const [isNext, setNext] = useState(false);
