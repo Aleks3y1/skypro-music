@@ -1,7 +1,4 @@
 import styles from "@/components/MainSidebar/MainSidebar.module.css";
-import Image from "next/image";
-import Link from "next/link";
-import MainCenterBlock from "@/components/MainCenterBlock/MainCenterBlock";
 import SidebarBlock from "@/components/SidebarBlock/SidebarBlock";
 
 export default function MainSidebar() {

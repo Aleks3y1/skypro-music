@@ -1,9 +1,9 @@
 "use client";
 import styles from "@/components/Filter/Filter.module.css";
 import {useState} from "react";
-import {Track} from "@/components/Interfaces/Interfaces";
+import {useAppSelector} from "@/store/store";
 
-export default function Filter({trackList}: { trackList: Track[] }) {
+export default function Filter() {
     const [isVisible, setIsVisible] = useState(false);
     const handleOnChange = () => {
         setIsVisible(!isVisible);
@@ -25,6 +25,8 @@ export default function Filter({trackList}: { trackList: Track[] }) {
         setIsVisible(false);
     }
 
+    const trackArray = useAppSelector((state) => state.player.trackArray)
+
     return (
         <div className={`${styles.centerblock__filter} ${styles.filter}`}>
             <div className={styles.filter__title}>Искать по:</div>
@@ -33,8 +35,8 @@ export default function Filter({trackList}: { trackList: Track[] }) {
                 исполнителю
                 {<div className={styles.filter__window} style={{visibility: isVisible ? "visible" : "hidden"}}>
                     <div className={styles.filter__window__content}>
-                        {trackList.map((track, numb) => (
-                            <div key={track.id || numb} className={styles.filter__text}>{track.name}</div>
+                        {trackArray?.map((track, numb) => (
+                            <div key={track._id || numb} className={styles.filter__text}>{track.name}</div>
                         ))}
                     </div>
                 </div>}
@@ -55,8 +57,8 @@ export default function Filter({trackList}: { trackList: Track[] }) {
                  onClick={handleOnClick}>жанру
                 {<div className={styles.filter__window} style={{visibility: isVision ? "visible" : "hidden"}}>
                     <div className={styles.filter__window__content}>
-                        {trackList.map((track, numb) => (
-                            <div key={track.id || numb} className={styles.filter__text}>{track.genre}</div>
+                        {trackArray?.map((track, numb) => (
+                            <div key={track._id || numb} className={styles.filter__text}>{track.genre}</div>
                         ))}
                     </div>
                 </div>}

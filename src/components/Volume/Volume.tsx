@@ -1,14 +1,10 @@
 import styles from "@/components/PlayerBar/PlayerBar.module.css";
-import {UseContext} from "@/hooks/UseContext";
+import {useDispatch} from "react-redux";
+import {setVolume} from "@/store/features/player/playerSlice";
 
 export default function Volume() {
-    const context = UseContext();
+    const dispatch = useDispatch();
 
-    if (!context) {
-        return <div>Контекста не существует</div>
-    }
-
-    const {setVolume} = context;
 
     return (
         <div className={`${styles.bar__volumeBlock} ${styles.volume}`}>
@@ -26,7 +22,7 @@ export default function Volume() {
                         min="0"
                         max="1"
                         step="0.01"
-                        onChange={(e) => setVolume(parseFloat(e.target.value))}
+                        onChange={(e) => dispatch(setVolume(parseFloat(e.target.value)))}
                     />
                 </div>
             </div>

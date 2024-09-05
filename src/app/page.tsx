@@ -1,28 +1,19 @@
+"use client";
 import styles from "./page.module.css";
 import Main from "@/components/Main/Main";
 import PlayerBar from "@/components/PlayerBar/PlayerBar";
-import {getTrack} from "@/app/api";
-import {Track} from "@/components/Interfaces/Interfaces";
-import {ContextProvider} from "@/context/Context";
+import {useRef} from "react";
 
-export default async function Home() {
-    let trackList: Track[] = [];
 
-    try {
-        trackList = await getTrack();
-    } catch (error) {
-        console.error("Ошибка при загрузке треков с апи:", error);
-    }
-
+export default function Home() {
+    const audioRef = useRef<HTMLAudioElement>(null);
     return (
-        <ContextProvider trackList={trackList}>
-            <div className={styles.wrapper}>
-                <div className={styles.container}>
-                    <Main trackList={trackList}/>
-                    <PlayerBar/>
-                    <footer className={styles.footer}></footer>
-                </div>
+        <div className={styles.wrapper}>
+            <div className={styles.container}>
+                <Main audioRef={audioRef}/>
+                <PlayerBar audioRef={audioRef}/>
+                <footer className={styles.footer}></footer>
             </div>
-        </ContextProvider>
+        </div>
     );
 }
