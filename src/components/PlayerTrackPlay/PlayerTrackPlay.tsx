@@ -4,6 +4,7 @@ import {useAppSelector} from "@/store/store";
 
 export default function PlayerTrackPlay() {
     const currentTrack = useAppSelector((state) => state.player.currentTrack);
+    const user = useAppSelector((state) => state.user);
 
     return (
         <div className={`${styles.player__trackPlay} ${styles.trackPlay}`}>

@@ -1,15 +1,7 @@
 import {RefObject, useEffect, useState} from "react";
 import styles from "@/components/PlayerBar/PlayerBar.module.css";
 import {useAppDispatch, useAppSelector} from "@/store/store";
-import {
-    setCurrentTrack,
-    setCurrentTrackId,
-    setCurrentTrackNum,
-    setDuration,
-    setIsLoop,
-    setIsPlaying,
-    setPaused
-} from "@/store/features/player/playerSlice";
+import {setCurrentTrack, setCurrentTrackId, setIsLoop, setIsPlaying,} from "@/store/features/player/playerSlice";
 import {Track} from "@/components/Interfaces/Interfaces";
 import ShuffledSVG from "@/components/ShuffledSVG/ShuffledSVG";
 import RepeatSVG from "@/components/RepeatSVG/RepeatSVG";
@@ -24,11 +16,10 @@ export default function PlayerControls({audioRef}: { audioRef: RefObject<HTMLAud
         isLoop,
         currentTrackNum,
         trackArray,
-        currentTrack
+        currentTrack,
     } = useAppSelector((state) => state.player);
     const [newArr, setNewArr] = useState<Track[]>([]);
     const [isShuffled, setIsShuffled] = useState(false);
-    const [isNext, setNext] = useState(false);
 
     const togglePlaying = () => {
         const audio = audioRef.current;
@@ -42,18 +33,6 @@ export default function PlayerControls({audioRef}: { audioRef: RefObject<HTMLAud
                 }
             }
             dispatch(setIsPlaying(!isPlaying));
-        }
-    };
-
-    const handlePlay = () => {
-        if (trackArray && trackArray.length > 0) {
-            if (Number(currentTrackNum) < trackArray.length - 1 && !audioRef.current?.loop) {
-                dispatch(setCurrentTrackNum(Number(currentTrackNum) + 1));
-                dispatch(setCurrentTrack(trackArray[Number(currentTrackNum) + 1]));
-            } else {
-                dispatch(setCurrentTrackNum(0));
-                dispatch(setCurrentTrack(trackArray[0]));
-            }
         }
     };
 
@@ -72,51 +51,37 @@ export default function PlayerControls({audioRef}: { audioRef: RefObject<HTMLAud
 
     useEffect(() => {
         if (trackArray && trackArray.length > 0) {
-            setCurrentTrack(trackArray[Number(currentTrackNum)]);
+            dispatch(setCurrentTrack(trackArray[currentTrackNum]));
         }
     }, [trackArray, currentTrackNum]);
-    useEffect(() => {
-        const audio = audioRef.current;
-        const trackDuration = currentTrack?.duration_in_seconds ?? null;
-        if (trackDuration !== null) {
-            dispatch(setDuration(Number(currentTrack?.duration_in_seconds)));
-        }
-        if (audio && currentTrack) {
-            audio.src = currentTrack.track_file;
-            audio.addEventListener("ended", handlePlay);
 
-            return () => {
-                audio.removeEventListener("ended", handlePlay);
-            };
-        }
-    }, [currentTrack]);
-
-
-    const nextTrack = (num: number) => {
+    const nextTrack = (step: number) => {
         if (trackArray && trackArray.length > 0) {
             const arrTracks = newArr.length > 0 ? [...newArr] : [...trackArray];
             const currentTrackIndex = arrTracks.findIndex(item => item._id === currentTrackId);
-            if (currentTrackIndex !== -1 && !(currentTrackIndex === trackArray.length - 1 && isNext)) {
-                let newTrackIndex = currentTrackIndex - num;
-                if (newTrackIndex < 0) {
-                    newTrackIndex = arrTracks.length - num;
+
+            if (currentTrackIndex !== -1) {
+                let newTrackIndex = currentTrackIndex + step;
+
+                if (newTrackIndex >= arrTracks.length) {
+                    newTrackIndex = 0;
+                } else if (newTrackIndex < 0) {
+                    newTrackIndex = arrTracks.length - 1;
                 }
 
                 const newTrack = arrTracks[newTrackIndex];
                 dispatch(setCurrentTrack(newTrack));
                 dispatch(setCurrentTrackId(newTrack._id));
-                dispatch(setPaused(true));
-                dispatch(isPlaying ? setPaused(true) : setPaused(false));
+                dispatch(setIsPlaying(true));
 
                 const audio = audioRef.current;
                 if (audio) {
                     const onCanPlay = () => {
                         audio.play().then(() => {
-                            dispatch(setPaused(false));
                             dispatch(setIsPlaying(true));
                         }).catch(error => {
                             console.log("Ошибка воспроизведения: ", error);
-                            dispatch(setPaused(true));
+                            dispatch(setIsPlaying(false));
                         });
                     };
 
@@ -131,6 +96,21 @@ export default function PlayerControls({audioRef}: { audioRef: RefObject<HTMLAud
             }
         }
     };
+
+    useEffect(() => {
+        const audio = audioRef.current;
+        if (audio) {
+            const onTrackEnd = () => {
+                nextTrack(1); // Переход к следующему треку по завершении
+            };
+
+            audio.addEventListener('ended', onTrackEnd);
+
+            return () => {
+                audio.removeEventListener('ended', onTrackEnd);
+            };
+        }
+    }, [audioRef, trackArray, currentTrackId, isShuffled]);
 
     const shuffle = () => {
         setIsShuffled(!isShuffled);
@@ -151,8 +131,7 @@ export default function PlayerControls({audioRef}: { audioRef: RefObject<HTMLAud
     return (
         <div className={styles.player__controls}>
             <div className={`${styles.player__btnPrev} ${styles._btnStyle}`} onClick={() => {
-                setNext(false);
-                nextTrack(1);
+                nextTrack(-1);
             }}>
                 <svg className={styles.player__btnPrevSvg}>
                     <use xlinkHref="/img/icon/sprite.svg#icon-prev"></use>
@@ -162,7 +141,7 @@ export default function PlayerControls({audioRef}: { audioRef: RefObject<HTMLAud
                 togglePlaying();
                 if (currentTrack) {
                     dispatch(setCurrentTrackId(currentTrack._id));
-                    dispatch(isPlaying ? setPaused(true) : setPaused(false));
+                    dispatch(isPlaying ? setIsPlaying(false) : setIsPlaying(true));
                 }
             }}>
                 {isPlaying ? (
@@ -178,8 +157,7 @@ export default function PlayerControls({audioRef}: { audioRef: RefObject<HTMLAud
                 )}
             </div>
             <div className={`${styles.player__btnNext} ${styles._btnStyle}`} onClick={() => {
-                nextTrack(-1);
-                setNext(true);
+                nextTrack(1);
             }}>
                 <svg className={styles.player__btnNextSvg}>
                     <use xlinkHref="/img/icon/sprite.svg#icon-next"></use>

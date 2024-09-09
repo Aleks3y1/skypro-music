@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {getTrack} from "@/app/api";
+import {getTrack} from "@/app/api/getTrack";
 import {Track} from "@/components/Interfaces/Interfaces";
 
 export const fetchTracks = createAsyncThunk<Track[]>(
@@ -12,7 +12,6 @@ export const fetchTracks = createAsyncThunk<Track[]>(
 interface PlayerState {
     currentTrackId: number | null;
     isPlaying: boolean;
-    isPaused: boolean;
     trackArray: Track[];
     isShuffle: boolean;
     volume: number;
@@ -21,12 +20,12 @@ interface PlayerState {
     currentTrackNum: number;
     currentTrack: Track | null;
     duration: number | null;
+    likedTracks: number[];
 }
 
 const initialState: PlayerState = {
     currentTrackId: null,
     isPlaying: false,
-    isPaused: false,
     trackArray: [],
     isShuffle: false,
     volume: 0.5,
@@ -34,7 +33,8 @@ const initialState: PlayerState = {
     currentTime: 0,
     currentTrackNum: 0,
     currentTrack: null,
-    duration: null,
+    duration: 0,
+    likedTracks: [],
 };
 
 const playerSlice = createSlice({
@@ -46,9 +46,6 @@ const playerSlice = createSlice({
         },
         setIsPlaying(state, action: PayloadAction<boolean>) {
             state.isPlaying = action.payload;
-        },
-        setPaused(state, action: PayloadAction<boolean>) {
-            state.isPaused = action.payload;
         },
         setTrackArray(state, action: PayloadAction<Track[]>) {
             state.trackArray = action.payload;
@@ -74,12 +71,21 @@ const playerSlice = createSlice({
         setDuration(state, action: PayloadAction<number | null>) {
             state.duration = action.payload;
         },
+        likeTrack(state, action: PayloadAction<number>) {
+            state.likedTracks.push(action.payload);
+        },
+        unlikeTrack(state, action: PayloadAction<number>) {
+            state.likedTracks = state.likedTracks.filter(id => id !== action.payload);
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchTracks.fulfilled, (state, action) => {
             state.trackArray = action.payload;
             if (action.payload.length > 0) {
                 state.currentTrack = action.payload[0];
+                state.currentTrackId = action.payload[0]._id;
+                state.currentTrackNum = 0;
+                state.duration = action.payload[0].duration_in_seconds;
             }
         });
     }
@@ -88,7 +94,6 @@ const playerSlice = createSlice({
 export const {
     setCurrentTrackId,
     setIsPlaying,
-    setPaused,
     setTrackArray,
     setShuffle,
     setVolume,
@@ -96,7 +101,9 @@ export const {
     setCurrentTime,
     setCurrentTrackNum,
     setCurrentTrack,
-    setDuration
+    setDuration,
+    likeTrack,
+    unlikeTrack
 } = playerSlice.actions;
 
 export const playerReducer = playerSlice.reducer;

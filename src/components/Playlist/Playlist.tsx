@@ -8,13 +8,12 @@ import {
     setCurrentTrack,
     setCurrentTrackId,
     setIsPlaying,
-    setPaused,
     setTrackArray,
 } from "@/store/features/player/playerSlice";
 import {RefObject, useEffect} from "react";
 
 
-export default function Playlist({audioRef}: { audioRef: RefObject<HTMLAudioElement> }) {
+export default function Playlist() {
     const formatDuration = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
@@ -22,32 +21,13 @@ export default function Playlist({audioRef}: { audioRef: RefObject<HTMLAudioElem
     };
 
     const dispatch = useAppDispatch();
-    const {currentTrackId, isPaused, trackArray} = useAppSelector((state) => state.player);
+    const {currentTrackId, isPlaying, trackArray} = useAppSelector((state) => state.player);
 
     const handlePlaylist = (track: Track) => {
-        const audio = audioRef?.current;
-        if (track && audio) {
-            dispatch(setIsPlaying(false));
-
-            const onCanPlay = () => {
-                audio.play().then(() => {
-                    dispatch(setIsPlaying(true));
-                }).catch(error => {
-                    console.log("Ошибка воспроизведения: ", error);
-                    dispatch(setIsPlaying(false));
-                });
-            };
-
-            audio.pause();
-            audio.src = track.track_file;
-            audio.removeEventListener('canplay', onCanPlay);
-            audio.addEventListener('canplay', onCanPlay);
-            audio.load();
-            dispatch(setCurrentTrack(track));
-        } else {
-            console.log("Проблема с ссылкой на трек");
-        }
-    };
+        dispatch(setCurrentTrack(track));
+        dispatch(setCurrentTrackId(track._id));
+        dispatch(setIsPlaying(true));
+    }
 
     useEffect(() => {
         const loadTracks = async () => {
@@ -68,8 +48,6 @@ export default function Playlist({audioRef}: { audioRef: RefObject<HTMLAudioElem
                     <div key={track._id || index} className={styles.playlist__item}
                          onClick={() => {
                              handlePlaylist(track);
-                             dispatch(setCurrentTrackId(track._id));
-                             dispatch(setPaused(false));
                          }
                          }>
                         <div className={`${styles.playlist__track} ${styles.track}`}>
@@ -80,7 +58,7 @@ export default function Playlist({audioRef}: { audioRef: RefObject<HTMLAudioElem
                                     </svg>
                                     {String(currentTrackId) === String(track._id) && (
                                         <span
-                                            className={`${styles.playingDot} ${isPaused ? styles.vibrating : ''}`}/>
+                                            className={`${styles.playingDot} ${!isPlaying ? styles.vibrating : ''}`}/>
                                     )}
                                 </div>
                                 <div className={styles.track__titleText} onClick={() => {

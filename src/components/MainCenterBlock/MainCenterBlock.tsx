@@ -1,9 +1,8 @@
 import styles from "@/components/MainCenterBlock/MainCenterBlock.module.css";
 import Filter from "@/components/Filter/Filter";
 import MainContent from "@/components/MainContent/MainContent";
-import {RefObject} from "react";
 
-export default function MainCenterBlock({audioRef}: { audioRef: RefObject<HTMLAudioElement> }) {
+export default function MainCenterBlock() {
     return (
         <div className={`${styles.main__centerblock} ${styles.centerblock}`}>
             <div className={`${styles.centerblock__search} ${styles.search}`}>
@@ -19,7 +18,7 @@ export default function MainCenterBlock({audioRef}: { audioRef: RefObject<HTMLAu
             </div>
             <h2 className={styles.centerblock__h2}>Треки</h2>
             <Filter/>
-            <MainContent audioRef={audioRef}/>
+            <MainContent/>
         </div>
     );
 }
