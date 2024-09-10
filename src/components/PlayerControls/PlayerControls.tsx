@@ -17,6 +17,7 @@ export default function PlayerControls({audioRef}: { audioRef: RefObject<HTMLAud
         currentTrackNum,
         trackArray,
         currentTrack,
+        clickedTracks,
     } = useAppSelector((state) => state.player);
     const [newArr, setNewArr] = useState<Track[]>([]);
     const [isShuffled, setIsShuffled] = useState(false);
@@ -35,6 +36,10 @@ export default function PlayerControls({audioRef}: { audioRef: RefObject<HTMLAud
             dispatch(setIsPlaying(!isPlaying));
         }
     };
+
+    useEffect(() => {
+        togglePlaying();
+    }, [clickedTracks]);
 
     const handleLoop = () => {
         dispatch(setIsLoop(!isLoop));

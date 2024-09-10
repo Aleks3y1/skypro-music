@@ -21,6 +21,7 @@ interface PlayerState {
     currentTrack: Track | null;
     duration: number | null;
     likedTracks: number[];
+    clickedTracks: boolean;
 }
 
 const initialState: PlayerState = {
@@ -35,6 +36,7 @@ const initialState: PlayerState = {
     currentTrack: null,
     duration: 0,
     likedTracks: [],
+    clickedTracks: false,
 };
 
 const playerSlice = createSlice({
@@ -77,6 +79,9 @@ const playerSlice = createSlice({
         unlikeTrack(state, action: PayloadAction<number>) {
             state.likedTracks = state.likedTracks.filter(id => id !== action.payload);
         },
+        setClickedTracks(state, action: PayloadAction<boolean>) {
+            state.clickedTracks = action.payload;
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(fetchTracks.fulfilled, (state, action) => {
@@ -103,7 +108,8 @@ export const {
     setCurrentTrack,
     setDuration,
     likeTrack,
-    unlikeTrack
+    unlikeTrack,
+    setClickedTracks,
 } = playerSlice.actions;
 
 export const playerReducer = playerSlice.reducer;

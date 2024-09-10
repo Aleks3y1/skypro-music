@@ -4,13 +4,13 @@ import Link from "next/link";
 import {Track} from "@/components/Interfaces/Interfaces";
 import {useAppDispatch, useAppSelector} from "@/store/store";
 import {
-    fetchTracks,
+    fetchTracks, setClickedTracks,
     setCurrentTrack,
-    setCurrentTrackId,
+    setCurrentTrackId, setCurrentTrackNum,
     setIsPlaying,
     setTrackArray,
 } from "@/store/features/player/playerSlice";
-import {RefObject, useEffect} from "react";
+import {useEffect} from "react";
 
 
 export default function Playlist() {
@@ -21,12 +21,13 @@ export default function Playlist() {
     };
 
     const dispatch = useAppDispatch();
-    const {currentTrackId, isPlaying, trackArray} = useAppSelector((state) => state.player);
+    const {currentTrackId, isPlaying, trackArray, clickedTracks} = useAppSelector((state) => state.player);
 
     const handlePlaylist = (track: Track) => {
         dispatch(setCurrentTrack(track));
         dispatch(setCurrentTrackId(track._id));
-        dispatch(setIsPlaying(true));
+        dispatch(setIsPlaying(false));
+        dispatch(setClickedTracks(!clickedTracks));
     }
 
     useEffect(() => {
