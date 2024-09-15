@@ -3,9 +3,15 @@ import styles from "@/components/Playlist/Playlist.module.css";
 import Link from "next/link";
 import {Track} from "@/components/Interfaces/Interfaces";
 import {useAppDispatch, useAppSelector} from "@/store/store";
-import {setClickedTracks, setCurrentTrack, setCurrentTrackId, setIsPlaying,} from "@/store/features/player/playerSlice";
-import {useEffect, useState} from "react";
-import {likeTrack, unlikeTrack} from "@/app/api/likeTrack";
+import {
+    setClickedTracks,
+    setCurrentTrack,
+    setCurrentTrackId,
+    setFavTracks,
+    setIsClickedFavoriteTracks,
+    setIsPlaying,
+} from "@/store/features/player/playerSlice";
+import {unlikeTrack} from "@/app/api/likeTrack";
 
 export default function PlaylistFavorites() {
     const formatDuration = (seconds: number) => {
@@ -15,11 +21,15 @@ export default function PlaylistFavorites() {
     };
 
     const dispatch = useAppDispatch();
-    const {currentTrackId, isPlaying, favoritesTracks, clickedTracks} = useAppSelector((state) => state.player);
+    const {
+        currentTrackId,
+        isPlaying,
+        favoritesTracks,
+        clickedTracks,
+        isClickedFavoriteTracks
+    } = useAppSelector((state) => state.player);
     const token = localStorage.getItem("access_token");
     const user = useAppSelector((state) => state.user);
-    const [updatedTrackArray, setUpdatedTrackArray] = useState<Track[]>(favoritesTracks);
-
 
     const handlePlaylist = (track: Track) => {
         dispatch(setCurrentTrack(track));
@@ -28,38 +38,18 @@ export default function PlaylistFavorites() {
         dispatch(setClickedTracks(!clickedTracks));
     };
 
-    useEffect(() => {
-        setUpdatedTrackArray(favoritesTracks);
-    }, [favoritesTracks]);
-
-    const like = async (trackId: number, token: string) => {
-        await likeTrack(trackId, token);
-        updateTrackArray(trackId, true);
-    };
-
     const unlike = async (trackId: number, token: string) => {
         await unlikeTrack(trackId, token);
-        updateTrackArray(trackId, false);
+        const response = favoritesTracks.filter((track) => track.staredUser.includes(trackId));
+        dispatch(setFavTracks(response));
+        dispatch(setIsClickedFavoriteTracks(!isClickedFavoriteTracks));
     };
-
-    const updateTrackArray = (trackId: number, isLiked: boolean) => {
-        const updatedArray = updatedTrackArray.map(track => {
-            if (track._id === trackId) {
-                const updatedStaredUser = isLiked
-                    ? [...track.staredUser, user.user?._id]
-                    : track.staredUser.filter(userId => userId !== user.user?._id);
-                return {...track, staredUser: updatedStaredUser};
-            }
-            return track;
-        });
-
-        setUpdatedTrackArray(updatedArray);
-    };
+    console.log("unlike", favoritesTracks);
 
     return (
         <div className={`${styles.content__playlist} ${styles.playlist}`}>
-            {Array.isArray(updatedTrackArray) && updatedTrackArray.length > 0 ? (
-                updatedTrackArray.map((track, index) => (
+            {Array.isArray(favoritesTracks) && favoritesTracks.length > 0 ? (
+                favoritesTracks.map((track, index) => (
                     <div key={track._id || index} className={styles.playlist__item}>
                         <div className={`${styles.playlist__track} ${styles.track}`}>
                             <div className={styles.track__title} onClick={() => {
@@ -71,7 +61,8 @@ export default function PlaylistFavorites() {
                                     </svg>
                                     {String(currentTrackId) === String(track._id) && (
                                         <span
-                                            className={`${styles.playingDot} ${!isPlaying ? styles.vibrating : ''}`}/>
+                                            className={`${styles.playingDot} ${!isPlaying ? styles.vibrating : ''}`}
+                                        />
                                     )}
                                 </div>
                                 <div className={styles.track__titleText}>
@@ -95,11 +86,7 @@ export default function PlaylistFavorites() {
                                      style={{fill: track.staredUser.includes(user.user?._id) ? "#B672FF" : "transparent"}}
                                      onClick={() => {
                                          if (token) {
-                                             if (track.staredUser.includes(user.user?._id)) {
-                                                 unlike(track._id, token);
-                                             } else {
-                                                 like(track._id, token);
-                                             }
+                                             unlike(track._id, token);
                                          }
                                      }}>
                                     <use xlinkHref="/img/icon/sprite.svg#icon-like"></use>

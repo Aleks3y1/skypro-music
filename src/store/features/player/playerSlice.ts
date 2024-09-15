@@ -23,6 +23,7 @@ interface PlayerState {
     likedTracks: number[];
     clickedTracks: boolean;
     favoritesTracks: Track[];
+    isClickedFavoriteTracks: boolean;
 }
 
 const initialState: PlayerState = {
@@ -39,6 +40,7 @@ const initialState: PlayerState = {
     likedTracks: [],
     clickedTracks: false,
     favoritesTracks: [],
+    isClickedFavoriteTracks: false,
 };
 
 const playerSlice = createSlice({
@@ -85,13 +87,27 @@ const playerSlice = createSlice({
             state.clickedTracks = action.payload;
         },
         setFavoritesTracks(state, action: PayloadAction<{ userId: number; tracks: Track[] }>) {
-            const { userId, tracks } = action.payload || {};
-            if (!userId || !tracks) {
-                console.error("Ошибка использования setFavoritesTracks");
+            const { userId, tracks } = action.payload;
+
+            if (!userId || !Array.isArray(tracks)) {
+                console.error("Неверные данные в setFavoritesTracks:", action.payload);
                 return;
             }
-            state.favoritesTracks = tracks.filter(track => track.staredUser.includes(userId));
+
+            // Обновляем избранные треки, фильтруя по пользователю
+            state.favoritesTracks = tracks.filter(track => {
+                if (!Array.isArray(track.staredUser)) {
+                    return false;
+                }
+                return track.staredUser.includes(userId);
+            });
         },
+        setIsClickedFavoriteTracks(state, action: PayloadAction<boolean>) {
+            state.isClickedFavoriteTracks = action.payload;
+        },
+        setFavTracks(state, action: PayloadAction<Track[]>) {
+            state.favoritesTracks = action.payload;
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(fetchTracks.fulfilled, (state, action) => {
@@ -120,7 +136,9 @@ export const {
     likeTrack,
     unlikeTrack,
     setClickedTracks,
-    setFavoritesTracks
+    setFavoritesTracks,
+    setIsClickedFavoriteTracks,
+    setFavTracks,
 } = playerSlice.actions;
 
 export const playerReducer = playerSlice.reducer;
