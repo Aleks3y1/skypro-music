@@ -3,18 +3,11 @@ import styles from "@/components/Playlist/Playlist.module.css";
 import Link from "next/link";
 import {Track} from "@/components/Interfaces/Interfaces";
 import {useAppDispatch, useAppSelector} from "@/store/store";
-import {
-    fetchTracks,
-    setClickedTracks,
-    setCurrentTrack,
-    setCurrentTrackId,
-    setIsPlaying,
-    setTrackArray,
-} from "@/store/features/player/playerSlice";
+import {setClickedTracks, setCurrentTrack, setCurrentTrackId, setIsPlaying,} from "@/store/features/player/playerSlice";
 import {useEffect, useState} from "react";
 import {likeTrack, unlikeTrack} from "@/app/api/likeTrack";
 
-export default function Playlist() {
+export default function PlaylistFavorites() {
     const formatDuration = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
@@ -22,10 +15,11 @@ export default function Playlist() {
     };
 
     const dispatch = useAppDispatch();
-    const {currentTrackId, isPlaying, trackArray, clickedTracks} = useAppSelector((state) => state.player);
+    const {currentTrackId, isPlaying, favoritesTracks, clickedTracks} = useAppSelector((state) => state.player);
     const token = localStorage.getItem("access_token");
     const user = useAppSelector((state) => state.user);
-    const [updatedTrackArray, setUpdatedTrackArray] = useState<Track[]>(trackArray);
+    const [updatedTrackArray, setUpdatedTrackArray] = useState<Track[]>(favoritesTracks);
+
 
     const handlePlaylist = (track: Track) => {
         dispatch(setCurrentTrack(track));
@@ -35,17 +29,8 @@ export default function Playlist() {
     };
 
     useEffect(() => {
-        const loadTracks = async () => {
-            try {
-                const response = await dispatch(fetchTracks()).unwrap();
-                setUpdatedTrackArray(response);
-                dispatch(setTrackArray(response));
-            } catch (errorText) {
-                console.error('Ошибка при загрузке треков:', errorText);
-            }
-        };
-        loadTracks();
-    }, [dispatch]);
+        setUpdatedTrackArray(favoritesTracks);
+    }, [favoritesTracks]);
 
     const like = async (trackId: number, token: string) => {
         await likeTrack(trackId, token);
@@ -69,7 +54,6 @@ export default function Playlist() {
         });
 
         setUpdatedTrackArray(updatedArray);
-
     };
 
     return (

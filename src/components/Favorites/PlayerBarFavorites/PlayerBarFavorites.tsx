@@ -1,14 +1,14 @@
 "use client";
 import styles from "@/components/PlayerBar/PlayerBar.module.css";
 import ProgressBar from "@/components/ProgressBar/ProgressBar";
-import PlayerControls from "@/components/PlayerControls/PlayerControls";
 import PlayerTrackPlay from "@/components/PlayerTrackPlay/PlayerTrackPlay";
 import Volume from "@/components/Volume/Volume";
 import {ChangeEvent, SyntheticEvent, useRef, useState} from "react";
 import {useAppDispatch, useAppSelector} from "@/store/store";
 import {setCurrentTime} from "@/store/features/player/playerSlice";
+import PlayerControlsFavorites from "@/components/Favorites/PlayerControlsFavorites/PlayerControlsFavorites";
 
-export default function PlayerBar() {
+export default function PlayerBarFavorites() {
     const {currentTime, currentTrack} = useAppSelector((state) => state.player);
     const [duration, setDuration] = useState<number | null>(null);
     const dispatch = useAppDispatch();
@@ -44,7 +44,7 @@ export default function PlayerBar() {
                 />
                 <div className={styles.bar__playerBlock}>
                     <div className={`${styles.bar__player} ${styles.player}`}>
-                        <PlayerControls audioRef={audioRef}/>
+                        <PlayerControlsFavorites audioRef={audioRef}/>
                         <PlayerTrackPlay/>
                     </div>
                     <Volume/>

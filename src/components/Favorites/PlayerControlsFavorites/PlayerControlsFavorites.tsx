@@ -6,7 +6,7 @@ import {Track} from "@/components/Interfaces/Interfaces";
 import ShuffledSVG from "@/components/ShuffledSVG/ShuffledSVG";
 import RepeatSVG from "@/components/RepeatSVG/RepeatSVG";
 
-export default function PlayerControls({audioRef}: { audioRef: RefObject<HTMLAudioElement> }) {
+export default function PlayerControlsFavorites({audioRef}: { audioRef: RefObject<HTMLAudioElement> }) {
     const dispatch = useAppDispatch();
 
     const {
@@ -15,10 +15,10 @@ export default function PlayerControls({audioRef}: { audioRef: RefObject<HTMLAud
         volume,
         isLoop,
         currentTrackNum,
-        trackArray,
         currentTrack,
         clickedTracks,
     } = useAppSelector((state) => state.player);
+    const trackArray = useAppSelector((state) => state.player.favoritesTracks);
     const [newArr, setNewArr] = useState<Track[]>([]);
     const [isShuffled, setIsShuffled] = useState(false);
 

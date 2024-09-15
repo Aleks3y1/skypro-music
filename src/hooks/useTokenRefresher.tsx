@@ -1,6 +1,6 @@
-import {useState} from 'react';
-import {useAppDispatch} from '@/store/store';
-import {refreshAccessToken} from "@/app/api/refreshAccessToken";
+import { useState } from 'react';
+import { useAppDispatch } from '@/store/store';
+import { refreshAccessToken } from "@/app/api/refreshAccessToken";
 
 export const useTokenRefresher = () => {
     const dispatch = useAppDispatch();
@@ -11,13 +11,14 @@ export const useTokenRefresher = () => {
         try {
             const token = await dispatch(refreshAccessToken()).unwrap();
             setNewAccessToken(token);
+            localStorage.setItem('access_token', token);
             setErrorMessage(null);
             return token;
         } catch (error: any) {
-            setErrorMessage(error);
+            setErrorMessage(error.message || 'Не удалось обновить токен');
             setNewAccessToken(null);
         }
     };
 
-    return {handleRefresh, newAccessToken, errorMessage};
+    return { handleRefresh, newAccessToken, errorMessage };
 };

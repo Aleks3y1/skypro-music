@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
 
-export default function Navigation() {
+export default function NavigationFavorites() {
     const [isOpen, setIsOpen] = useState(false);
     const router = useRouter();
 
@@ -16,7 +16,6 @@ export default function Navigation() {
     const handleRoute = () => {
         return router.push("/");
     }
-
 
     return (
         <nav className={`${styles.main__nav} ${styles.nav}`}>

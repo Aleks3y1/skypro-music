@@ -1,4 +1,4 @@
-const LIKE_TRACK_URL = 'https://webdev-music-003b5b991590.herokuapp.com/catalog/track/'; // Базовый URL для треков
+const LIKE_TRACK_URL = 'https://webdev-music-003b5b991590.herokuapp.com/catalog/track/';
 
 export const likeTrack = async (trackId: number, token: string) => {
     const response = await fetch(`${LIKE_TRACK_URL}${trackId}/favorite/`, {

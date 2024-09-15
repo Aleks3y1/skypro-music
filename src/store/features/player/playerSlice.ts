@@ -22,6 +22,7 @@ interface PlayerState {
     duration: number | null;
     likedTracks: number[];
     clickedTracks: boolean;
+    favoritesTracks: Track[];
 }
 
 const initialState: PlayerState = {
@@ -37,6 +38,7 @@ const initialState: PlayerState = {
     duration: 0,
     likedTracks: [],
     clickedTracks: false,
+    favoritesTracks: [],
 };
 
 const playerSlice = createSlice({
@@ -56,16 +58,16 @@ const playerSlice = createSlice({
             state.isShuffle = action.payload;
         },
         setVolume(state, action: PayloadAction<number | null>) {
-            state.volume = action.payload;
+            state.volume = Number(action.payload);
         },
         setIsLoop(state, action: PayloadAction<boolean>) {
             state.isLoop = action.payload;
         },
         setCurrentTime(state, action: PayloadAction<number | null>) {
-            state.currentTime = action.payload;
+            state.currentTime = Number(action.payload);
         },
         setCurrentTrackNum(state, action: PayloadAction<number | null>) {
-            state.currentTrackNum = action.payload;
+            state.currentTrackNum = Number(action.payload);
         },
         setCurrentTrack(state, action: PayloadAction<Track>) {
             state.currentTrack = action.payload;
@@ -81,7 +83,15 @@ const playerSlice = createSlice({
         },
         setClickedTracks(state, action: PayloadAction<boolean>) {
             state.clickedTracks = action.payload;
-        }
+        },
+        setFavoritesTracks(state, action: PayloadAction<{ userId: number; tracks: Track[] }>) {
+            const { userId, tracks } = action.payload || {};
+            if (!userId || !tracks) {
+                console.error("Ошибка использования setFavoritesTracks");
+                return;
+            }
+            state.favoritesTracks = tracks.filter(track => track.staredUser.includes(userId));
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchTracks.fulfilled, (state, action) => {
@@ -110,6 +120,7 @@ export const {
     likeTrack,
     unlikeTrack,
     setClickedTracks,
+    setFavoritesTracks
 } = playerSlice.actions;
 
 export const playerReducer = playerSlice.reducer;
