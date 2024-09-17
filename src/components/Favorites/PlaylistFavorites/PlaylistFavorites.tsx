@@ -15,6 +15,17 @@ import {
 import {useEffect} from "react";
 import {unlikeTrack} from "@/app/api/likeTrack";
 
+interface User {
+    _id: number;
+    username: string;
+    email: string;
+}
+
+interface UserState {
+    user: User | null;
+    errorMessage: string;
+}
+
 export default function PlaylistFavorites() {
     const formatDuration = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);
@@ -31,16 +42,16 @@ export default function PlaylistFavorites() {
         trackArray,
         isClickedFavoriteTracks
     } = useAppSelector((state) => state.player);
-    const token = localStorage.getItem("access_token");
-    const user = useAppSelector((state) => state.user);
+    const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
+    // Явная типизация для userState
+    const userState = useAppSelector((state) => state.user) as UserState;
 
-    // Обновляем список избранных треков при монтировании и при изменении треков или пользователя
     useEffect(() => {
-        if (user.user) {
-            dispatch(setFavoritesTracks({userId: user.user?._id, tracks: trackArray}));
+        if (userState.user) {
+            dispatch(setFavoritesTracks({userId: userState.user._id, tracks: trackArray}));
         }
-    }, [dispatch, trackArray, user.user, isClickedFavoriteTracks, clickedTracks]);
+    }, [dispatch, trackArray, userState.user, isClickedFavoriteTracks, clickedTracks]);
 
     const handlePlaylist = (track: Track) => {
         dispatch(setCurrentTrack(track));
@@ -49,14 +60,16 @@ export default function PlaylistFavorites() {
         dispatch(setClickedTracks(!clickedTracks));
     };
 
-    const unlike = async (trackId: number, token: string) => {
-        await unlikeTrack(trackId, token);
-        // Обновляем избранные треки сразу после удаления лайка
-        dispatch(setFavoritesTracks({userId: user.user?._id, tracks: trackArray}));
-        const response = trackArray.filter((track) => track.staredUser.includes(trackId));
-        dispatch(setFavTracks(response));
-        dispatch(setIsClickedFavoriteTracks(!isClickedFavoriteTracks)); // Обновляем флаг клика для ререндера
-        console.log("unlike", favoritesTracks);
+    // Асинхронная функция для удаления лайка у трека
+    const handleUnlikeClick = async (trackId: number | undefined) => {
+        if (token && userState.user && typeof trackId === 'number') {
+            await unlikeTrack(trackId, token);
+            dispatch(setFavoritesTracks({userId: userState.user._id, tracks: trackArray}));
+            const updatedFavorites = trackArray.filter((track) => track.staredUser.includes(userState.user!._id));
+            dispatch(setFavTracks(updatedFavorites));
+            dispatch(setIsClickedFavoriteTracks(!isClickedFavoriteTracks));
+            console.log("unlike", favoritesTracks);
+        }
     };
 
     return (
@@ -65,9 +78,7 @@ export default function PlaylistFavorites() {
                 favoritesTracks.map((track, index) => (
                     <div key={track._id || index} className={styles.playlist__item}>
                         <div className={`${styles.playlist__track} ${styles.track}`}>
-                            <div className={styles.track__title} onClick={() => {
-                                handlePlaylist(track);
-                            }}>
+                            <div className={styles.track__title} onClick={() => handlePlaylist(track)}>
                                 <div className={styles.track__titleImage}>
                                     <svg className={styles.track__titleSvg}>
                                         <use xlinkHref="/img/icon/sprite.svg#icon-note"></use>
@@ -84,24 +95,16 @@ export default function PlaylistFavorites() {
                                     </Link>
                                 </div>
                             </div>
-                            <div className={styles.track__author} onClick={() => {
-                                handlePlaylist(track);
-                            }}>
+                            <div className={styles.track__author} onClick={() => handlePlaylist(track)}>
                                 <Link className={styles.track__authorLink} href="#">{track.author}</Link>
                             </div>
-                            <div className={styles.track__album} onClick={() => {
-                                handlePlaylist(track);
-                            }}>
+                            <div className={styles.track__album} onClick={() => handlePlaylist(track)}>
                                 <Link className={styles.track__albumLink} href="#">{track.album}</Link>
                             </div>
                             <div className={styles.track__time}>
                                 <svg className={styles.track__timeSvg}
-                                     style={{fill: track.staredUser.includes(user.user?._id) ? "#B672FF" : "transparent"}}
-                                     onClick={() => {
-                                         if (token) {
-                                             unlike(track._id, token);
-                                         }
-                                     }}>
+                                     style={{fill: track.staredUser.includes(userState.user!._id) ? "#B672FF" : "transparent"}}
+                                     onClick={() => handleUnlikeClick(track._id)}>
                                     <use xlinkHref="/img/icon/sprite.svg#icon-like"></use>
                                 </svg>
                                 <span className={styles.track__timeText}>

@@ -5,8 +5,20 @@ import SidebarBlock from "@/components/SidebarBlock/SidebarBlock";
 import {useAppSelector} from "@/store/store";
 import {useRouter} from "next/navigation";
 
+interface User {
+    _id: number;
+    username: string;
+    email: string;
+}
+
+interface UserState {
+    user: User | null;
+    errorMessage: string;
+}
+
+
 export default function MainSidebar() {
-    const user = useAppSelector(state => state.user);
+    const userState: UserState = useAppSelector(state => state.user);
     const router = useRouter();
 
     const handleLogout = () => {
@@ -19,7 +31,7 @@ export default function MainSidebar() {
     return (
         <div className={`${styles.main__sidebar} ${styles.sidebar}`}>
             <div className={styles.sidebar__personal}>
-                <p className={styles.sidebar__personalName}>{user.user?.username || 'Авторизируйтесь'}</p>
+                <p className={styles.sidebar__personalName}>{userState.user!.username || 'Авторизируйтесь'}</p>
                 <div className={styles.sidebar__icon} onClick={handleLogout}>
                     <svg>
                         <use xlinkHref="img/icon/sprite.svg#logout"></use>

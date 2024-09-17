@@ -10,6 +10,6 @@ export interface Track {
         data: number[];
     };
     release_date: string;
-    staredUser: number[];
     track_file: string;
+    staredUser: (number | undefined)[];
 }

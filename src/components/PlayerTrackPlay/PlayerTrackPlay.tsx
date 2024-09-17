@@ -4,19 +4,30 @@ import {useAppDispatch, useAppSelector} from "@/store/store";
 import {likeTrack, unlikeTrack} from "@/app/api/likeTrack";
 import {setCurrentTrack} from "@/store/features/player/playerSlice";
 
+interface User {
+    _id: number;
+    username: string;
+    email: string;
+}
+
+interface UserState {
+    user: User | null;
+    errorMessage: string;
+}
+
 export default function PlayerTrackPlay() {
-    const user = useAppSelector((state) => state.user);
-    const token = localStorage.getItem("access_token");
+    const userState = useAppSelector((state) => state.user) as UserState;
+    const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
     const dispatch = useAppDispatch();
     const {currentTrackId, currentTrack} = useAppSelector((state) => state.player);
 
     const like = async (trackId: number, token: string) => {
         await likeTrack(trackId, token);
 
-        if (currentTrack) {
+        if (currentTrack && userState.user) {
             const updatedTrack = {
                 ...currentTrack,
-                staredUser: [...currentTrack.staredUser, user.user?._id]
+                staredUser: [...currentTrack.staredUser, userState.user._id],
             };
             dispatch(setCurrentTrack(updatedTrack));
         }
@@ -24,16 +35,27 @@ export default function PlayerTrackPlay() {
 
     const unlike = async (trackId: number, token: string) => {
         await unlikeTrack(trackId, token);
-        if (currentTrack) {
+
+        if (currentTrack && userState.user) {
             const updatedTrack = {
                 ...currentTrack,
-                staredUser: currentTrack.staredUser.filter((id) => id !== user.user?._id)
+                staredUser: currentTrack.staredUser.filter((id) => id !== userState.user!._id),
             };
             dispatch(setCurrentTrack(updatedTrack));
         }
     };
 
-    if (!currentTrackId || !currentTrack) {
+    const handleLikeClick = async () => {
+        if (!token || !userState.user || !currentTrack) return;
+
+        if (currentTrack.staredUser.includes(userState.user._id)) {
+            await unlike(currentTrack._id, token);
+        } else {
+            await like(currentTrack._id, token);
+        }
+    };
+
+    if (!currentTrackId || !currentTrack || !userState.user) {
         return null;
     }
 
@@ -59,17 +81,15 @@ export default function PlayerTrackPlay() {
 
             <div className={styles.trackPlay__likeDis}>
                 <div className={`${styles.trackPlay__like} ${styles._btnIcon}`}>
-                    <svg className={styles.trackPlay__likeSvg}
-                         style={{fill: currentTrack?.staredUser.includes(user.user?._id) ? "#B672FF" : "transparent"}}
-                         onClick={() => {
-                             if (token) {
-                                 if (currentTrack.staredUser.includes(user.user?._id)) {
-                                     unlike(currentTrack._id, token);
-                                 } else {
-                                     like(currentTrack._id, token);
-                                 }
-                             }
-                         }}>
+                    <svg
+                        className={styles.trackPlay__likeSvg}
+                        style={{
+                            fill: currentTrack.staredUser.includes(userState.user!._id)
+                                ? "#B672FF"
+                                : "transparent",
+                        }}
+                        onClick={handleLikeClick}
+                    >
                         <use xlinkHref="/img/icon/sprite.svg#icon-like"></use>
                     </svg>
                 </div>
