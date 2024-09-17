@@ -1,19 +1,18 @@
 "use client";
 import styles from "@/components/Playlist/Playlist.module.css";
 import Link from "next/link";
-import {Track} from "@/components/Interfaces/Interfaces";
-import {useAppDispatch, useAppSelector} from "@/store/store";
+import { Track } from "@/components/Interfaces/Interfaces";
+import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
     setClickedTracks,
     setCurrentTrack,
     setCurrentTrackId,
-    setFavoritesTracks,
     setFavTracks,
-    setIsClickedFavoriteTracks,
     setIsPlaying,
 } from "@/store/features/player/playerSlice";
-import {useEffect} from "react";
-import {unlikeTrack} from "@/app/api/likeTrack";
+import { useEffect } from "react";
+import { unlikeTrack } from "@/app/api/likeTrack";
+import { getFavoriteTracks } from "@/app/api/getTrack";
 
 interface User {
     _id: number;
@@ -39,19 +38,31 @@ export default function PlaylistFavorites() {
         isPlaying,
         favoritesTracks,
         clickedTracks,
-        trackArray,
-        isClickedFavoriteTracks
     } = useAppSelector((state) => state.player);
-    const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
 
-    // Явная типизация для userState
+    const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
     const userState = useAppSelector((state) => state.user) as UserState;
 
     useEffect(() => {
+        console.log("Избранные треки обновлены:", favoritesTracks);
+    }, [favoritesTracks]);
+
+    useEffect(() => {
         if (userState.user) {
-            dispatch(setFavoritesTracks({userId: userState.user._id, tracks: trackArray}));
+            fetchFavorites();
         }
-    }, [dispatch, trackArray, userState.user, isClickedFavoriteTracks, clickedTracks]);
+    }, [userState.user]);
+
+    const fetchFavorites = async () => {
+        try {
+            if (userState.user && token) {
+                const updatedFavorites = await getFavoriteTracks(token);
+                dispatch(setFavTracks(updatedFavorites));
+            }
+        } catch (error) {
+            console.error("Ошибка при получении избранных треков:", error);
+        }
+    };
 
     const handlePlaylist = (track: Track) => {
         dispatch(setCurrentTrack(track));
@@ -60,15 +71,14 @@ export default function PlaylistFavorites() {
         dispatch(setClickedTracks(!clickedTracks));
     };
 
-    // Асинхронная функция для удаления лайка у трека
     const handleUnlikeClick = async (trackId: number | undefined) => {
-        if (token && userState.user && typeof trackId === 'number') {
-            await unlikeTrack(trackId, token);
-            dispatch(setFavoritesTracks({userId: userState.user._id, tracks: trackArray}));
-            const updatedFavorites = trackArray.filter((track) => track.staredUser.includes(userState.user!._id));
-            dispatch(setFavTracks(updatedFavorites));
-            dispatch(setIsClickedFavoriteTracks(!isClickedFavoriteTracks));
-            console.log("unlike", favoritesTracks);
+        try {
+            if (token && userState.user && typeof trackId === 'number') {
+                await unlikeTrack(trackId, token);
+                await fetchFavorites();
+            }
+        } catch (error) {
+            console.error("Ошибка при удалении трека из избранных:", error);
         }
     };
 
@@ -84,9 +94,7 @@ export default function PlaylistFavorites() {
                                         <use xlinkHref="/img/icon/sprite.svg#icon-note"></use>
                                     </svg>
                                     {String(currentTrackId) === String(track._id) && (
-                                        <span
-                                            className={`${styles.playingDot} ${!isPlaying ? styles.vibrating : ''}`}
-                                        />
+                                        <span className={`${styles.playingDot} ${!isPlaying ? styles.vibrating : ''}`} />
                                     )}
                                 </div>
                                 <div className={styles.track__titleText}>
@@ -103,7 +111,7 @@ export default function PlaylistFavorites() {
                             </div>
                             <div className={styles.track__time}>
                                 <svg className={styles.track__timeSvg}
-                                     style={{fill: track.staredUser.includes(userState.user!._id) ? "#B672FF" : "transparent"}}
+                                     style={{ fill: track.staredUser.includes(userState.user!._id) ? "#B672FF" : "transparent" }}
                                      onClick={() => handleUnlikeClick(track._id)}>
                                     <use xlinkHref="/img/icon/sprite.svg#icon-like"></use>
                                 </svg>

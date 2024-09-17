@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {getTrack} from "@/app/api/getTrack";
+import {getFavoriteTracks, getTrack} from "@/app/api/getTrack";
 import {Track} from "@/components/Interfaces/Interfaces";
 
 export const fetchTracks = createAsyncThunk<Track[]>(
@@ -8,6 +8,15 @@ export const fetchTracks = createAsyncThunk<Track[]>(
         return await getTrack();
     }
 )
+
+export const fetchFavoriteTracks = createAsyncThunk(
+    "player/fetchFavoriteTracks",
+    async () => {
+        const token = localStorage.getItem("access_token");
+        return token ? await getFavoriteTracks(token) : null;
+    }
+);
+
 
 interface PlayerState {
     currentTrackId: number | null;
@@ -87,27 +96,22 @@ const playerSlice = createSlice({
             state.clickedTracks = action.payload;
         },
         setFavoritesTracks(state, action: PayloadAction<{ userId: number; tracks: Track[] }>) {
-            const { userId, tracks } = action.payload;
-
+            const {userId, tracks} = action.payload;
             if (!userId || !Array.isArray(tracks)) {
                 console.error("Неверные данные в setFavoritesTracks:", action.payload);
                 return;
             }
 
-            // Обновляем избранные треки, фильтруя по пользователю
             state.favoritesTracks = tracks.filter(track => {
-                if (!Array.isArray(track.staredUser)) {
-                    return false;
-                }
                 return track.staredUser.includes(userId);
             });
+        },
+        setFavTracks(state, action: PayloadAction<Track[]>) {
+            state.favoritesTracks = action.payload;
         },
         setIsClickedFavoriteTracks(state, action: PayloadAction<boolean>) {
             state.isClickedFavoriteTracks = action.payload;
         },
-        setFavTracks(state, action: PayloadAction<Track[]>) {
-            state.favoritesTracks = action.payload;
-        }
     },
     extraReducers: (builder) => {
         builder.addCase(fetchTracks.fulfilled, (state, action) => {
@@ -118,6 +122,9 @@ const playerSlice = createSlice({
                 state.currentTrackNum = 0;
                 state.duration = action.payload[0].duration_in_seconds;
             }
+        });
+        builder.addCase(fetchFavoriteTracks.fulfilled, (state, action) => {
+            state.favoritesTracks = action.payload;
         });
     }
 });
