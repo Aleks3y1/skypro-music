@@ -7,10 +7,12 @@ import {
     setClickedTracks,
     setCurrentTrack,
     setCurrentTrackId,
+    setFavoritesTracks,
     setFavTracks,
     setIsClickedFavoriteTracks,
     setIsPlaying,
 } from "@/store/features/player/playerSlice";
+import {useEffect} from "react";
 import {unlikeTrack} from "@/app/api/likeTrack";
 
 export default function PlaylistFavorites() {
@@ -26,10 +28,19 @@ export default function PlaylistFavorites() {
         isPlaying,
         favoritesTracks,
         clickedTracks,
+        trackArray,
         isClickedFavoriteTracks
     } = useAppSelector((state) => state.player);
     const token = localStorage.getItem("access_token");
     const user = useAppSelector((state) => state.user);
+
+
+    // Обновляем список избранных треков при монтировании и при изменении треков или пользователя
+    useEffect(() => {
+        if (user.user) {
+            dispatch(setFavoritesTracks({userId: user.user?._id, tracks: trackArray}));
+        }
+    }, [dispatch, trackArray, user.user, isClickedFavoriteTracks, clickedTracks]);
 
     const handlePlaylist = (track: Track) => {
         dispatch(setCurrentTrack(track));
@@ -40,11 +51,13 @@ export default function PlaylistFavorites() {
 
     const unlike = async (trackId: number, token: string) => {
         await unlikeTrack(trackId, token);
-        const response = favoritesTracks.filter((track) => track.staredUser.includes(trackId));
+        // Обновляем избранные треки сразу после удаления лайка
+        dispatch(setFavoritesTracks({userId: user.user?._id, tracks: trackArray}));
+        const response = trackArray.filter((track) => track.staredUser.includes(trackId));
         dispatch(setFavTracks(response));
-        dispatch(setIsClickedFavoriteTracks(!isClickedFavoriteTracks));
+        dispatch(setIsClickedFavoriteTracks(!isClickedFavoriteTracks)); // Обновляем флаг клика для ререндера
+        console.log("unlike", favoritesTracks);
     };
-    console.log("unlike", favoritesTracks);
 
     return (
         <div className={`${styles.content__playlist} ${styles.playlist}`}>

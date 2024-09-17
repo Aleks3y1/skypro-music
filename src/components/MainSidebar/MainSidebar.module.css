@@ -37,3 +37,13 @@
     border-radius: 50%;
     cursor: pointer;
 }
+.sidebar__icon svg {
+    width: inherit;
+    height: inherit;
+}
+
+@media screen and (max-width: 1740px) {
+    .main__sidebar {
+        padding: 20px 10px 20px 10px;
+    }
+}

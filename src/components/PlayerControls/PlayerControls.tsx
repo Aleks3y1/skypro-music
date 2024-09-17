@@ -29,6 +29,7 @@ export default function PlayerControls({audioRef}: { audioRef: RefObject<HTMLAud
             if (isPlaying) {
                 audio.pause();
             } else {
+                audio.pause();
                 const playPromise = audio.play();
                 if (playPromise !== undefined) {
                     playPromise.catch(error => console.log("Ошибка воспроизведения: ", error));

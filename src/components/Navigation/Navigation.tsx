@@ -4,10 +4,12 @@ import styles from "@/components/Navigation/Navigation.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import {useRouter} from "next/navigation";
+import {useAppSelector} from "@/store/store";
 
 export default function Navigation() {
     const [isOpen, setIsOpen] = useState(false);
     const router = useRouter();
+    const user = useAppSelector(state => state.user);
 
     const handleClick = () => {
         setIsOpen(!isOpen);
@@ -36,9 +38,9 @@ export default function Navigation() {
                     <li className={styles.menu__item} onClick={handleRoute}>
                         <Link href="#" className={styles.menu__link}>Главное</Link>
                     </li>
-                    <li className={styles.menu__item}>
+                    {user.user ? (<li className={styles.menu__item}>
                         <Link href="/favorites" className={styles.menu__link}>Мой плейлист</Link>
-                    </li>
+                    </li>) : null}
                     <li className={styles.menu__item}>
                         <Link href="/signin" className={styles.menu__link}>Войти</Link>
                     </li>
