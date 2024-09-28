@@ -55,7 +55,7 @@ export default function PlayerTrackPlay() {
         }
     };
 
-    if (!currentTrackId || !currentTrack || !userState.user) {
+    if (!currentTrackId || !currentTrack) {
         return null;
     }
 
@@ -84,9 +84,9 @@ export default function PlayerTrackPlay() {
                     <svg
                         className={styles.trackPlay__likeSvg}
                         style={{
-                            fill: currentTrack.staredUser.includes(userState.user!._id)
+                            fill: !userState.user ? ("transparent") : (currentTrack.staredUser.includes(userState.user!._id)
                                 ? "#B672FF"
-                                : "transparent",
+                                : "transparent"),
                         }}
                         onClick={handleLikeClick}
                     >
