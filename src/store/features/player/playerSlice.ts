@@ -41,6 +41,7 @@ interface PlayerState {
     favoritesTracks: Track[];
     isClickedFavoriteTracks: boolean;
     selection: Selection[];
+    currentArrayTracks: Track[];
 }
 
 const initialState: PlayerState = {
@@ -59,6 +60,7 @@ const initialState: PlayerState = {
     favoritesTracks: [],
     isClickedFavoriteTracks: false,
     selection: [],
+    currentArrayTracks: [],
 };
 
 const playerSlice = createSlice({
@@ -121,15 +123,20 @@ const playerSlice = createSlice({
         setIsClickedFavoriteTracks(state, action: PayloadAction<boolean>) {
             state.isClickedFavoriteTracks = action.payload;
         },
+        setCurrentArrayTracks(state, action: PayloadAction<Track[]>) {
+            state.currentArrayTracks = action.payload;
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(fetchTracks.fulfilled, (state, action) => {
             state.trackArray = action.payload;
+            console.log(action.payload);
             if (action.payload.length > 0) {
                 state.currentTrack = action.payload[0];
                 state.currentTrackId = action.payload[0]._id;
                 state.currentTrackNum = 0;
                 state.duration = action.payload[0].duration_in_seconds;
+                state.currentArrayTracks = action.payload;
             }
         });
         builder.addCase(fetchFavoriteTracks.fulfilled, (state, action) => {
@@ -151,6 +158,7 @@ export const {
     setCurrentTrack,
     setClickedTracks,
     setFavTracks,
+    setCurrentArrayTracks,
 } = playerSlice.actions;
 
 export const playerReducer = playerSlice.reducer;

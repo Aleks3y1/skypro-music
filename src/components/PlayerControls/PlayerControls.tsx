@@ -18,8 +18,9 @@ export default function PlayerControls({audioRef}: { audioRef: RefObject<HTMLAud
         trackArray,
         currentTrack,
         clickedTracks,
+        currentArrayTracks,
     } = useAppSelector((state) => state.player);
-    const [newArr, setNewArr] = useState<Track[]>([]);
+    const [newArr, setNewArr] = useState<Track[]>([]); //массив с треками после решафла
     const [isShuffled, setIsShuffled] = useState(false);
 
 
@@ -50,12 +51,14 @@ export default function PlayerControls({audioRef}: { audioRef: RefObject<HTMLAud
         }
     };
 
+    //обновление громкостью
     useEffect(() => {
         if (audioRef.current) {
             audioRef.current.volume = Number(volume);
         }
     }, [volume]);
 
+    //обновляем текущий трек
     useEffect(() => {
         if (trackArray && trackArray.length > 0) {
             dispatch(setCurrentTrack(trackArray[currentTrackNum]));
@@ -64,7 +67,7 @@ export default function PlayerControls({audioRef}: { audioRef: RefObject<HTMLAud
 
     const nextTrack = (step: number) => {
         if (trackArray && trackArray.length > 0) {
-            const arrTracks = newArr.length > 0 ? [...newArr] : [...trackArray];
+            const arrTracks = newArr.length > 0 ? [...newArr] : [...currentArrayTracks];
             const currentTrackIndex = arrTracks.findIndex(item => item._id === currentTrackId);
 
             if (currentTrackIndex !== -1) {
@@ -104,6 +107,7 @@ export default function PlayerControls({audioRef}: { audioRef: RefObject<HTMLAud
         }
     };
 
+    //проверка закончился ли трек => переключение на следующий трек
     useEffect(() => {
         const audio = audioRef.current;
         if (audio) {

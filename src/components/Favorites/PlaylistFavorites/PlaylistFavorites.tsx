@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Track } from "@/components/Interfaces/Interfaces";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
-    setClickedTracks,
+    setClickedTracks, setCurrentArrayTracks,
     setCurrentTrack,
     setCurrentTrackId,
     setFavTracks,
@@ -58,6 +58,7 @@ export default function PlaylistFavorites() {
             if (userState.user && token) {
                 const updatedFavorites = await getFavoriteTracks(token);
                 dispatch(setFavTracks(updatedFavorites));
+                dispatch(setCurrentArrayTracks(updatedFavorites));
             }
         } catch (error) {
             console.error("Ошибка при получении избранных треков:", error);
