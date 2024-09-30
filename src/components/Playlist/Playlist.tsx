@@ -4,12 +4,10 @@ import Link from "next/link";
 import { Track } from "@/components/Interfaces/Interfaces";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import {
-    fetchTracks,
     setClickedTracks,
     setCurrentTrack,
     setCurrentTrackId,
     setIsPlaying,
-    setTrackArray,
 } from "@/store/features/player/playerSlice";
 import { useEffect, useState } from "react";
 import { likeTrack, unlikeTrack } from "@/app/api/likeTrack";
@@ -25,7 +23,11 @@ interface UserState {
     errorMessage: string;
 }
 
-export default function Playlist() {
+export interface PlaylistProps {
+    tracks: Track[];
+}
+
+export default function Playlist({ tracks }: PlaylistProps) {
     const formatDuration = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
@@ -33,10 +35,15 @@ export default function Playlist() {
     };
 
     const dispatch = useAppDispatch();
-    const { currentTrackId, isPlaying, trackArray, clickedTracks } = useAppSelector((state) => state.player);
+    const { currentTrackId, isPlaying, clickedTracks } = useAppSelector((state) => state.player);
     const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
     const userState = useAppSelector((state) => state.user) as UserState;
-    const [updatedTrackArray, setUpdatedTrackArray] = useState<Track[]>(trackArray);
+    const [updatedTracks, setUpdatedTracks] = useState<Track[]>(tracks);
+
+    // Обновляем состояние треков при изменении пропсов tracks
+    useEffect(() => {
+        setUpdatedTracks(tracks);
+    }, [tracks]);
 
     const handlePlaylist = (track: Track) => {
         dispatch(setCurrentTrack(track));
@@ -44,19 +51,6 @@ export default function Playlist() {
         dispatch(setIsPlaying(false));
         dispatch(setClickedTracks(!clickedTracks));
     };
-
-    useEffect(() => {
-        const loadTracks = async () => {
-            try {
-                const response = await dispatch(fetchTracks()).unwrap();
-                setUpdatedTrackArray(response);
-                dispatch(setTrackArray(response));
-            } catch (errorText) {
-                console.error('Ошибка при загрузке треков:', errorText);
-            }
-        };
-        loadTracks();
-    }, [dispatch]);
 
     const like = async (trackId: number, token: string) => {
         try {
@@ -79,7 +73,7 @@ export default function Playlist() {
     };
 
     const updateTrackArray = (trackId: number, isLiked: boolean) => {
-        const updatedArray = updatedTrackArray.map(track => {
+        const updatedArray = updatedTracks.map(track => {
             if (track._id === trackId) {
                 const updatedStaredUser = isLiked
                     ? [...track.staredUser, userState.user?._id]
@@ -89,13 +83,13 @@ export default function Playlist() {
             return track;
         });
 
-        setUpdatedTrackArray(updatedArray);
+        setUpdatedTracks(updatedArray);
     };
 
     return (
         <div className={`${styles.content__playlist} ${styles.playlist}`}>
-            {Array.isArray(updatedTrackArray) && updatedTrackArray.length > 0 ? (
-                updatedTrackArray.map((track, index) => (
+            {Array.isArray(updatedTracks) && updatedTracks.length > 0 ? (
+                updatedTracks.map((track, index) => (
                     <div key={track._id || index} className={styles.playlist__item}>
                         <div className={`${styles.playlist__track} ${styles.track}`}>
                             <div className={styles.track__title} onClick={() => handlePlaylist(track)}>

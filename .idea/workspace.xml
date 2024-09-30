@@ -6,7 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="23365140-5e49-4d7c-a9ad-ee5d0b094984" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/PlayerTrackPlay/PlayerTrackPlay.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/PlayerTrackPlay/PlayerTrackPlay.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Interfaces/Interfaces.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Interfaces/Interfaces.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Main/Main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Main/Main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/MainCenterBlock/MainCenterBlock.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/MainCenterBlock/MainCenterBlock.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/MainContent/MainContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/MainContent/MainContent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/PlayerControls/PlayerControls.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/PlayerControls/PlayerControls.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Playlist/Playlist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Playlist/Playlist.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/SidebarBlock/SidebarBlock.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SidebarBlock/SidebarBlock.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/features/player/playerSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/features/player/playerSlice.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +62,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/app/(pages)/selection/[id]" />
       <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/src/store/features/player" />
     </key>

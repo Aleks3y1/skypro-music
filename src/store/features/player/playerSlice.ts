@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {getFavoriteTracks, getTrack} from "@/app/api/getTrack";
-import {Track} from "@/components/Interfaces/Interfaces";
+import {Track, Selection} from "@/components/Interfaces/Interfaces";
+import {getSelection} from "@/app/api/getSelection";
 
 export const fetchTracks = createAsyncThunk<Track[]>(
     "player/fetchTrack",
@@ -17,6 +18,12 @@ export const fetchFavoriteTracks = createAsyncThunk(
     }
 );
 
+export const fetchSelection = createAsyncThunk<Selection[]>(
+    "player/getSelection",
+    async () => {
+        return await getSelection();
+    }
+);
 
 interface PlayerState {
     currentTrackId: number | null;
@@ -33,11 +40,12 @@ interface PlayerState {
     clickedTracks: boolean;
     favoritesTracks: Track[];
     isClickedFavoriteTracks: boolean;
+    selection: Selection[];
 }
 
 const initialState: PlayerState = {
     currentTrackId: null,
-    isPlaying: false,
+    isPlaying: true,
     trackArray: [],
     isShuffle: false,
     volume: 0.5,
@@ -50,6 +58,7 @@ const initialState: PlayerState = {
     clickedTracks: false,
     favoritesTracks: [],
     isClickedFavoriteTracks: false,
+    selection: [],
 };
 
 const playerSlice = createSlice({
@@ -126,6 +135,9 @@ const playerSlice = createSlice({
         builder.addCase(fetchFavoriteTracks.fulfilled, (state, action) => {
             state.favoritesTracks = action.payload;
         });
+        builder.addCase(fetchSelection.fulfilled, (state, action) => {
+            state.selection = action.payload;
+        });
     }
 });
 
@@ -133,18 +145,11 @@ export const {
     setCurrentTrackId,
     setIsPlaying,
     setTrackArray,
-    setShuffle,
     setVolume,
     setIsLoop,
     setCurrentTime,
-    setCurrentTrackNum,
     setCurrentTrack,
-    setDuration,
-    likeTrack,
-    unlikeTrack,
     setClickedTracks,
-    setFavoritesTracks,
-    setIsClickedFavoriteTracks,
     setFavTracks,
 } = playerSlice.actions;
 
