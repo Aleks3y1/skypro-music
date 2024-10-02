@@ -27,7 +27,7 @@ export default function MainCenterBlock({tracks}: PlaylistProps) {
                 />
             </div>
             <h1 className={styles.centerblock__h2}>
-                {selection.find((sel) => String(sel._id) === id)?.name || "Подборка"}
+                {selection.find((sel) => String(sel._id) === id)?.name || "Все треки"}
             </h1>
             <Filter/>
             <MainContent tracks={tracks}/>

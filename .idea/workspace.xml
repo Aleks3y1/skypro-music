@@ -4,15 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="23365140-5e49-4d7c-a9ad-ee5d0b094984" name="Changes" comment="Released: Реализует страницу подборок.">
-      <change afterPath="$PROJECT_DIR$/src/components/PlayerControls/PlayerControls.test.tsx" afterDir="false" />
+    <list default="true" id="23365140-5e49-4d7c-a9ad-ee5d0b094984" name="Changes" comment="Released: Пишем тесты">
+      <change afterPath="$PROJECT_DIR$/src/components/MainSidebar/MainSidebar.test.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/ProgressBar/ProgressBar.test.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/Volume/Volume.test.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Favorites/PlaylistFavorites/PlaylistFavorites.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Favorites/PlaylistFavorites/PlaylistFavorites.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/PlayerControls/PlayerControls.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/PlayerControls/PlayerControls.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/store/features/player/playerSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/features/player/playerSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/PlayerControls/PlayerControls.test.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ProgressBar/ProgressBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ProgressBar/ProgressBar.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,21 +43,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;hw-1&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/erofeev/Desktop/Study/skypro-music/skypro-music&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/erofeev/Desktop/Study/skypro-music/skypro-music/node_modules/typescript/lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Jest.Play/Pause button works.executor": "Run",
+    "Jest.PlayerControls Component.executor": "Run",
+    "Jest.ProgressBar Component.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "hw-1",
+    "last_opened_file_path": "/Users/erofeev/Desktop/Study/skypro-music/skypro-music",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "/Users/erofeev/Desktop/Study/skypro-music/skypro-music/node_modules/jest",
+    "nodejs_package_manager_path": "npm",
+    "npm.dev.executor": "Run",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "ts.external.directory.path": "/Users/erofeev/Desktop/Study/skypro-music/skypro-music/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/app/(pages)/selection/[id]" />
@@ -64,7 +70,7 @@
       <recent name="$PROJECT_DIR$/src/store/features/player" />
     </key>
   </component>
-  <component name="RunManager" selected="Jest.PlayerControls Component">
+  <component name="RunManager" selected="Jest.ProgressBar Component">
     <configuration name="Play/Pause button works" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
@@ -89,6 +95,18 @@
       </test-names>
       <method v="2" />
     </configuration>
+    <configuration name="ProgressBar Component" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/src/components/ProgressBar/ProgressBar.test.tsx" />
+      <test-names>
+        <test-name value="ProgressBar Component" />
+      </test-names>
+      <method v="2" />
+    </configuration>
     <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -101,6 +119,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Jest.ProgressBar Component" />
         <item itemvalue="Jest.PlayerControls Component" />
         <item itemvalue="Jest.Play/Pause button works" />
         <item itemvalue="npm.dev" />
@@ -133,7 +152,15 @@
       <option name="project" value="LOCAL" />
       <updated>1727704497213</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Released: Пишем тесты">
+      <option name="closed" value="true" />
+      <created>1727715139420</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1727715139420</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -141,6 +168,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Released: Реализует страницу подборок." />
-    <option name="LAST_COMMIT_MESSAGE" value="Released: Реализует страницу подборок." />
+    <MESSAGE value="Released: Пишем тесты" />
+    <option name="LAST_COMMIT_MESSAGE" value="Released: Пишем тесты" />
   </component>
 </project>

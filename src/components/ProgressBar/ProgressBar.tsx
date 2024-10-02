@@ -24,7 +24,7 @@ export default function ProgressBar({max, value, step, onChange, currentTime, du
                 min="0"
                 max={isNaN(max) ? 0 : max}
                 step={step}
-                value={value!}
+                value={value !== null ? value : 0}
                 onChange={onChange}
             />
             <div className={styles.timeDisplay}>
