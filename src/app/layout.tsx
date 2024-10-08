@@ -1,10 +1,8 @@
 import type {Metadata} from "next";
-import {Montserrat} from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "@/store/features/providers/ReduxProvider";
 import PlayerBar from "@/components/PlayerBar/PlayerBar";
 
-const montserrat = Montserrat({subsets: ["cyrillic"]});
 
 export const metadata: Metadata = {
     title: "Music App",
@@ -17,9 +15,9 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en">
+        <html lang="ru">
         <ReduxProvider>
-            <body className={montserrat.className}>
+            <body className="stratos-skyeng">
             <div style={{display: "flex", flexDirection: "column", minHeight: "100vh"}}>
                 <div style={{flex: 1}}>{children}</div>
                 <PlayerBar/>

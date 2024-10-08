@@ -5,15 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="23365140-5e49-4d7c-a9ad-ee5d0b094984" name="Changes" comment="Released: Пишем тесты">
-      <change afterPath="$PROJECT_DIR$/src/components/MainSidebar/MainSidebar.test.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/ProgressBar/ProgressBar.test.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Volume/Volume.test.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/PlayerControls/PlayerControls.test.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ProgressBar/ProgressBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ProgressBar/ProgressBar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/img/playlist01.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/img/playlist01.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/img/playlist02.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/img/playlist02.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/img/playlist03.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/img/playlist03.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/globals.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/SidebarBlock/SidebarBlock.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SidebarBlock/SidebarBlock.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,12 +27,12 @@
     &quot;assignee&quot;: &quot;Aleks3y1&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Aleks3y1/skypro-music.git&quot;,
-    &quot;accountId&quot;: &quot;c2f4458d-17c1-4bd9-a203-fa9a158b234f&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Aleks3y1/skypro-music.git",
+    "accountId": "490e6cbb-7939-485b-bde0-4bbab78ef23b"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -49,7 +47,7 @@
     "Jest.PlayerControls Component.executor": "Run",
     "Jest.ProgressBar Component.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "hw-1",
+    "git-widget-placeholder": "#5 on hw-1",
     "last_opened_file_path": "/Users/erofeev/Desktop/Study/skypro-music/skypro-music",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -65,12 +63,14 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/app/(pages)/selection/[id]" />
-      <recent name="$PROJECT_DIR$/src" />
-      <recent name="$PROJECT_DIR$/src/store/features/player" />
+      <recent name="$PROJECT_DIR$/src/app/playlist" />
+      <recent name="$PROJECT_DIR$/src/app" />
+      <recent name="$PROJECT_DIR$/src/app/(pages)" />
+      <recent name="$PROJECT_DIR$/src/app/(pages)/playlist" />
+      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Jest.ProgressBar Component">
+  <component name="RunManager" selected="npm.dev">
     <configuration name="Play/Pause button works" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
@@ -119,17 +119,17 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="npm.dev" />
         <item itemvalue="Jest.ProgressBar Component" />
         <item itemvalue="Jest.PlayerControls Component" />
         <item itemvalue="Jest.Play/Pause button works" />
-        <item itemvalue="npm.dev" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-WS-242.20224.426" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-WS-242.23339.15" />
       </set>
     </attachedChunks>
   </component>
@@ -143,6 +143,7 @@
       <updated>1724552737479</updated>
       <workItem from="1724552738575" duration="6598000" />
       <workItem from="1724565193859" duration="26940000" />
+      <workItem from="1727965111981" duration="11717000" />
     </task>
     <task id="LOCAL-00001" summary="Released: Реализует страницу подборок.">
       <option name="closed" value="true" />
@@ -160,7 +161,15 @@
       <option name="project" value="LOCAL" />
       <updated>1727715139420</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Released: Пишем тесты">
+      <option name="closed" value="true" />
+      <created>1727881342805</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1727881342805</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
