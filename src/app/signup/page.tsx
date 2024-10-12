@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "@/app/(pages)/signup/signup.module.css";
+import styles from "@/app/signup/signup.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import {useAppDispatch} from "@/store/store";
@@ -33,7 +33,7 @@ export default function Page() {
             <div className={styles.containerSignup}>
                 <div className={styles.modal__block}>
                     <form className={styles.modal__formLogin} onSubmit={handleSignUp}>
-                        <Link href="/">
+                        <Link href="/public">
                             <div className={styles.modal__logo}>
                                 <Image src="/img/logo_modal.png" alt="logo" width={140} height={21}/>
                             </div>

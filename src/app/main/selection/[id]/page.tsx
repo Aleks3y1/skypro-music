@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useAppSelector } from "@/store/store";
 import { Track } from "@/components/Interfaces/Interfaces";
 import { useParams } from "next/navigation";
-import styles from "@/app/page.module.css";
+import styles from "@/app/main/page.module.css";
 import Main from "@/components/Main/Main";
 import {useDispatch} from "react-redux";
 import {setCurrentArrayTracks} from "@/store/features/player/playerSlice";

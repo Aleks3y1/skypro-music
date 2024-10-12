@@ -14,7 +14,7 @@ export default function NavigationFavorites() {
     }
 
     const handleRoute = () => {
-        return router.push("/");
+        return router.push("/main");
     }
 
     return (
@@ -36,7 +36,7 @@ export default function NavigationFavorites() {
                         <Link href="#" className={styles.menu__link}>Главное</Link>
                     </li>
                     <li className={styles.menu__item}>
-                        <Link href="/favorites" className={styles.menu__link}>Мой плейлист</Link>
+                        <Link href="/main/favorites" className={styles.menu__link}>Мой плейлист</Link>
                     </li>
                     <li className={styles.menu__item}>
                         <Link href="/signin" className={styles.menu__link}>Войти</Link>

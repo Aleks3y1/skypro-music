@@ -14,10 +14,6 @@ export interface Track {
     staredUser: (number | undefined)[];
 }
 
-interface ItemsTrack {
-    _id: number;
-}
-
 export interface Selection {
     _id: number;
     name: string;

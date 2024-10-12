@@ -16,7 +16,7 @@ export default function Navigation() {
     }
 
     const handleRoute = () => {
-        return router.push("/");
+        return router.push("/main");
     }
 
 
@@ -39,7 +39,7 @@ export default function Navigation() {
                         <Link href="#" className={styles.menu__link}>Главное</Link>
                     </li>
                     {user.user ? (<li className={styles.menu__item}>
-                        <Link href="/favorites" className={styles.menu__link}>Мой плейлист</Link>
+                        <Link href="/main/favorites" className={styles.menu__link}>Мой плейлист</Link>
                     </li>) : null}
                     <li className={styles.menu__item}>
                         <Link href="/signin" className={styles.menu__link}>Войти</Link>

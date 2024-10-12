@@ -2,8 +2,9 @@
 
 import styles from "@/components/MainSidebar/MainSidebar.module.css";
 import SidebarBlock from "@/components/SidebarBlock/SidebarBlock";
-import {useAppSelector} from "@/store/store";
+import {useAppDispatch, useAppSelector} from "@/store/store";
 import {useRouter} from "next/navigation";
+import {logout} from "@/store/features/users/userSlice";
 
 interface User {
     _id: number;
@@ -19,14 +20,17 @@ interface UserState {
 
 export default function MainSidebar() {
     const userState: UserState = useAppSelector(state => state.user);
+    const dispatch = useAppDispatch();
     const router = useRouter();
 
     const handleLogout = () => {
         localStorage.removeItem("user");
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
+        dispatch(logout());
         router.push("/signin");
     }
+
 
     return (
         <div className={`${styles.main__sidebar} ${styles.sidebar}`}>

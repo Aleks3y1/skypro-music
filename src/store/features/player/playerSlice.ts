@@ -130,7 +130,6 @@ const playerSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(fetchTracks.fulfilled, (state, action) => {
             state.trackArray = action.payload;
-            console.log(action.payload);
             if (action.payload.length > 0) {
                 state.currentTrack = action.payload[0];
                 state.currentTrackId = action.payload[0]._id;

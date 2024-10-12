@@ -1,4 +1,4 @@
-import styles from "@/app/page.module.css";
+import styles from "@/app/main/page.module.css";
 import MainFavorites from "@/components/Favorites/MainFavorites/MainFavorites";
 
 export default function Page() {

@@ -1,4 +1,4 @@
-import styles from "../../../app/page.module.css"
+import styles from "@/app/main/page.module.css"
 import MainSidebar from "@/components/MainSidebar/MainSidebar";
 import NavigationFavorites from "@/components/Favorites/NavigationFavorites/NavigationFavorites";
 import MainCenter from "@/components/Favorites/MainCenter/MainCenter";

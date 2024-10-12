@@ -4,6 +4,7 @@ import Main from "@/components/Main/Main";
 import {useAppDispatch, useAppSelector} from "@/store/store";
 import {fetchTracks, setCurrentArrayTracks} from "@/store/features/player/playerSlice";
 import {useEffect} from "react";
+import {setUser} from "@/store/features/users/userSlice";
 
 
 export default function Home() {
@@ -12,6 +13,13 @@ export default function Home() {
 
     useEffect(() => {
         dispatch(fetchTracks());
+    }, [dispatch]);
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser && storedUser !== "undefined") {
+            dispatch(setUser(JSON.parse(storedUser)));
+        }
     }, [dispatch]);
 
     useEffect(() => {

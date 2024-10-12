@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "@/app/(pages)/signin/signin.module.css";
+import styles from "@/app/signin/signin.module.css";
 import Image from "next/image";
 import Link from "next/link";
 import {logIn} from "@/app/api/logIn";
@@ -27,8 +27,7 @@ export default function Page() {
             await dispatch(logIn({email, password})).unwrap();
             const result = await dispatch(getToken({email, password})).unwrap();
             saveTokens(result.access, result.refresh);
-            router.push('/');
-            console.log('Успешно');
+            router.push('/main/');
         } catch (error: any) {
             setErrorMessage(error);
         }
@@ -39,7 +38,7 @@ export default function Page() {
             <div className={styles.containerEnter}>
                 <div className={styles.modal__block}>
                     <form className={styles.modal__formLogin} onSubmit={handleAuth}>
-                        <Link href="/">
+                        <Link href="/public">
                             <div className={styles.modal__logo}>
                                 <Image src="/img/logo_modal.png" alt="logo" width={140} height={21}/>
                             </div>
