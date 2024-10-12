@@ -73,7 +73,7 @@
 
 .modal__formLogin {
     width: 366px;
-    height: 439px;
+    height: 526px;
     background-color: #FFFFFF;
     border-radius: 12px;
     display: -webkit-box;
@@ -169,24 +169,20 @@
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
-}
-
-.modal__btnSignupEnt a {
-    width: 100%;
-    height: 100%;
     font-style: normal;
     font-weight: 400;
     font-size: 18px;
     line-height: 24px;
     letter-spacing: -0.05px;
     color: #FFFFFF;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
 }
+
+.error {
+    color: #580ea2;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 24px;
+    letter-spacing: -0.05px;
+}
+

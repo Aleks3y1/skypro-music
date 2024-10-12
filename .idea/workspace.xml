@@ -4,7 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="23365140-5e49-4d7c-a9ad-ee5d0b094984" name="Changes" comment="" />
+    <list default="true" id="23365140-5e49-4d7c-a9ad-ee5d0b094984" name="Changes" comment="Исправляет качество фотографий">
+      <change afterPath="$PROJECT_DIR$/src/app/main/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(pages)/favorites/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/main/favorites/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(pages)/selection/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/main/selection/[id]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(pages)/signin/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/signin/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(pages)/signin/signin.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/signin/signin.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(pages)/signup/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/signup/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/(pages)/signup/signup.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/signup/signup.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/api/logIn.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/api/logIn.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/page.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/main/page.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/main/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Favorites/MainFavorites/MainFavorites.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Favorites/MainFavorites/MainFavorites.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Favorites/NavigationFavorites/NavigationFavorites.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Favorites/NavigationFavorites/NavigationFavorites.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Interfaces/Interfaces.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Interfaces/Interfaces.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Main/Main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Main/Main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/MainSidebar/MainSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/MainSidebar/MainSidebar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Navigation/Navigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Navigation/Navigation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/SidebarBlock/SidebarBlock.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SidebarBlock/SidebarBlock.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/features/player/playerSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/features/player/playerSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/store/features/users/userSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/store/features/users/userSlice.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -19,12 +41,12 @@
     &quot;assignee&quot;: &quot;Aleks3y1&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Aleks3y1/skypro-music.git&quot;,
-    &quot;accountId&quot;: &quot;c2f4458d-17c1-4bd9-a203-fa9a158b234f&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Aleks3y1/skypro-music.git",
+    "accountId": "490e6cbb-7939-485b-bde0-4bbab78ef23b"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>
@@ -35,26 +57,74 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Jest.Play/Pause button works.executor": "Run",
+    "Jest.PlayerControls Component.executor": "Run",
+    "Jest.ProgressBar Component.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "hw-1",
-    "last_opened_file_path": "/Users/erofeev/Desktop/Study/skypro-music/skypro-music",
+    "git-widget-placeholder": "#5 on hw-1",
+    "last_opened_file_path": "/Users/erofeev/Desktop/Study/skypro-music/skypro-music/src/app/(pages)/main",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "/Users/erofeev/Desktop/Study/skypro-music/skypro-music/node_modules/jest",
     "nodejs_package_manager_path": "npm",
     "npm.dev.executor": "Run",
+    "run.code.analysis.last.selected.profile": "pProject Default",
     "ts.external.directory.path": "/Users/erofeev/Desktop/Study/skypro-music/skypro-music/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/app/(pages)/main" />
+      <recent name="$PROJECT_DIR$/src/app/(pages)" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src" />
-      <recent name="$PROJECT_DIR$/src/store/features/player" />
+      <recent name="$PROJECT_DIR$/src/app" />
+      <recent name="$PROJECT_DIR$/src/app/(pages)/main" />
+      <recent name="$PROJECT_DIR$/src/app/playlist" />
+      <recent name="$PROJECT_DIR$/src/app/(pages)" />
+      <recent name="$PROJECT_DIR$/src/app/(pages)/playlist" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="npm.dev">
+    <configuration name="Play/Pause button works" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/src/components/PlayerControls/PlayerControls.test.tsx" />
+      <test-names>
+        <test-name value="Play/Pause button works" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="PlayerControls Component" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/src/components/PlayerControls/PlayerControls.test.tsx" />
+      <test-names>
+        <test-name value="PlayerControls Component" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="ProgressBar Component" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/src/components/ProgressBar/ProgressBar.test.tsx" />
+      <test-names>
+        <test-name value="ProgressBar Component" />
+      </test-names>
+      <method v="2" />
+    </configuration>
     <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -68,13 +138,16 @@
     <recent_temporary>
       <list>
         <item itemvalue="npm.dev" />
+        <item itemvalue="Jest.ProgressBar Component" />
+        <item itemvalue="Jest.PlayerControls Component" />
+        <item itemvalue="Jest.Play/Pause button works" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-WS-242.20224.426" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-WS-242.23339.15" />
       </set>
     </attachedChunks>
   </component>
@@ -88,10 +161,50 @@
       <updated>1724552737479</updated>
       <workItem from="1724552738575" duration="6598000" />
       <workItem from="1724565193859" duration="26940000" />
+      <workItem from="1727965111981" duration="32746000" />
     </task>
+    <task id="LOCAL-00001" summary="Released: Реализует страницу подборок.">
+      <option name="closed" value="true" />
+      <created>1727704497213</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1727704497213</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Released: Пишем тесты">
+      <option name="closed" value="true" />
+      <created>1727715139420</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1727715139420</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Released: Пишем тесты">
+      <option name="closed" value="true" />
+      <created>1727881342805</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1727881342805</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Исправляет качество фотографий">
+      <option name="closed" value="true" />
+      <created>1728400310521</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1728400310522</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Released: Реализует страницу подборок." />
+    <MESSAGE value="Released: Пишем тесты" />
+    <MESSAGE value="Исправляет качество фотографий" />
+    <option name="LAST_COMMIT_MESSAGE" value="Исправляет качество фотографий" />
   </component>
 </project>
