@@ -1,11 +1,13 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit'
 import {playerReducer} from "@/store/features/player/playerSlice";
 import {TypedUseSelectorHook, useDispatch, useSelector, useStore} from "react-redux";
+import {userReducer} from "@/store/features/users/userSlice";
 
 export const makeStore = () => {
     return configureStore({
         reducer: combineReducers({
             player: playerReducer,
+            user: userReducer,
         })
     })
 }

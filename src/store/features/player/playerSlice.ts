@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {getTrack} from "@/app/api";
-import {Track} from "@/components/Interfaces/Interfaces";
+import {getFavoriteTracks, getTrack} from "@/app/api/getTrack";
+import {Track, Selection} from "@/components/Interfaces/Interfaces";
+import {getSelection} from "@/app/api/getSelection";
 
 export const fetchTracks = createAsyncThunk<Track[]>(
     "player/fetchTrack",
@@ -9,10 +10,24 @@ export const fetchTracks = createAsyncThunk<Track[]>(
     }
 )
 
+export const fetchFavoriteTracks = createAsyncThunk(
+    "player/fetchFavoriteTracks",
+    async () => {
+        const token = localStorage.getItem("access_token");
+        return token ? await getFavoriteTracks(token) : null;
+    }
+);
+
+export const fetchSelection = createAsyncThunk<Selection[]>(
+    "player/getSelection",
+    async () => {
+        return await getSelection();
+    }
+);
+
 interface PlayerState {
     currentTrackId: number | null;
     isPlaying: boolean;
-    isPaused: boolean;
     trackArray: Track[];
     isShuffle: boolean;
     volume: number;
@@ -21,12 +36,17 @@ interface PlayerState {
     currentTrackNum: number;
     currentTrack: Track | null;
     duration: number | null;
+    likedTracks: number[];
+    clickedTracks: boolean;
+    favoritesTracks: Track[];
+    isClickedFavoriteTracks: boolean;
+    selection: Selection[];
+    currentArrayTracks: Track[];
 }
 
 const initialState: PlayerState = {
     currentTrackId: null,
-    isPlaying: false,
-    isPaused: false,
+    isPlaying: true,
     trackArray: [],
     isShuffle: false,
     volume: 0.5,
@@ -34,7 +54,13 @@ const initialState: PlayerState = {
     currentTime: 0,
     currentTrackNum: 0,
     currentTrack: null,
-    duration: null,
+    duration: 0,
+    likedTracks: [],
+    clickedTracks: false,
+    favoritesTracks: [],
+    isClickedFavoriteTracks: false,
+    selection: [],
+    currentArrayTracks: [],
 };
 
 const playerSlice = createSlice({
@@ -47,9 +73,6 @@ const playerSlice = createSlice({
         setIsPlaying(state, action: PayloadAction<boolean>) {
             state.isPlaying = action.payload;
         },
-        setPaused(state, action: PayloadAction<boolean>) {
-            state.isPaused = action.payload;
-        },
         setTrackArray(state, action: PayloadAction<Track[]>) {
             state.trackArray = action.payload;
         },
@@ -57,16 +80,16 @@ const playerSlice = createSlice({
             state.isShuffle = action.payload;
         },
         setVolume(state, action: PayloadAction<number | null>) {
-            state.volume = action.payload;
+            state.volume = Number(action.payload);
         },
         setIsLoop(state, action: PayloadAction<boolean>) {
             state.isLoop = action.payload;
         },
         setCurrentTime(state, action: PayloadAction<number | null>) {
-            state.currentTime = action.payload;
+            state.currentTime = Number(action.payload);
         },
         setCurrentTrackNum(state, action: PayloadAction<number | null>) {
-            state.currentTrackNum = action.payload;
+            state.currentTrackNum = Number(action.payload);
         },
         setCurrentTrack(state, action: PayloadAction<Track>) {
             state.currentTrack = action.payload;
@@ -74,13 +97,52 @@ const playerSlice = createSlice({
         setDuration(state, action: PayloadAction<number | null>) {
             state.duration = action.payload;
         },
+        likeTrack(state, action: PayloadAction<number>) {
+            state.likedTracks.push(action.payload);
+        },
+        unlikeTrack(state, action: PayloadAction<number>) {
+            state.likedTracks = state.likedTracks.filter(id => id !== action.payload);
+        },
+        setClickedTracks(state, action: PayloadAction<boolean>) {
+            state.clickedTracks = action.payload;
+        },
+        setFavoritesTracks(state, action: PayloadAction<{ userId: number; tracks: Track[] }>) {
+            const {userId, tracks} = action.payload;
+            if (!userId || !Array.isArray(tracks)) {
+                console.error("Неверные данные в setFavoritesTracks:", action.payload);
+                return;
+            }
+
+            state.favoritesTracks = tracks.filter(track => {
+                return track.staredUser.includes(userId);
+            });
+        },
+        setFavTracks(state, action: PayloadAction<Track[]>) {
+            state.favoritesTracks = action.payload;
+        },
+        setIsClickedFavoriteTracks(state, action: PayloadAction<boolean>) {
+            state.isClickedFavoriteTracks = action.payload;
+        },
+        setCurrentArrayTracks(state, action: PayloadAction<Track[]>) {
+            state.currentArrayTracks = action.payload;
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(fetchTracks.fulfilled, (state, action) => {
             state.trackArray = action.payload;
             if (action.payload.length > 0) {
                 state.currentTrack = action.payload[0];
+                state.currentTrackId = action.payload[0]._id;
+                state.currentTrackNum = 0;
+                state.duration = action.payload[0].duration_in_seconds;
+                state.currentArrayTracks = action.payload;
             }
+        });
+        builder.addCase(fetchFavoriteTracks.fulfilled, (state, action) => {
+            state.favoritesTracks = action.payload;
+        });
+        builder.addCase(fetchSelection.fulfilled, (state, action) => {
+            state.selection = action.payload;
         });
     }
 });
@@ -88,15 +150,14 @@ const playerSlice = createSlice({
 export const {
     setCurrentTrackId,
     setIsPlaying,
-    setPaused,
     setTrackArray,
-    setShuffle,
     setVolume,
     setIsLoop,
     setCurrentTime,
-    setCurrentTrackNum,
     setCurrentTrack,
-    setDuration
+    setClickedTracks,
+    setFavTracks,
+    setCurrentArrayTracks,
 } = playerSlice.actions;
 
 export const playerReducer = playerSlice.reducer;

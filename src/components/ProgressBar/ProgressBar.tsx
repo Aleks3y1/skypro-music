@@ -2,7 +2,7 @@ import styles from './ProgressBar.module.css';
 
 interface ProgressBarProps {
     max: number;
-    value: number;
+    value: number | null;
     step: number;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     currentTime: number;
@@ -22,9 +22,9 @@ export default function ProgressBar({max, value, step, onChange, currentTime, du
                 className={styles.styledProgressInput}
                 type="range"
                 min="0"
-                max={max}
+                max={isNaN(max) ? 0 : max}
                 step={step}
-                value={value}
+                value={value !== null ? value : 0}
                 onChange={onChange}
             />
             <div className={styles.timeDisplay}>

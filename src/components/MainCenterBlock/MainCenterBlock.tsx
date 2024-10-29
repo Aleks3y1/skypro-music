@@ -1,9 +1,28 @@
+"use client";
 import styles from "@/components/MainCenterBlock/MainCenterBlock.module.css";
 import Filter from "@/components/Filter/Filter";
 import MainContent from "@/components/MainContent/MainContent";
-import {RefObject} from "react";
+import { Track } from "@/components/Interfaces/Interfaces";
+import { useState, useMemo } from "react";
+import { useAppSelector } from "@/store/store";
 
-export default function MainCenterBlock({audioRef}: { audioRef: RefObject<HTMLAudioElement> }) {
+export interface PlaylistProps {
+    tracks: Track[];
+}
+
+export default function MainCenterBlock({ tracks }: PlaylistProps) {
+    const { selection } = useAppSelector((state) => state.player);
+    const [searchQuery, setSearchQuery] = useState<string>("");
+
+    const filteredTracks = useMemo(() => {
+        if (searchQuery.trim() === "") {
+            return tracks;
+        }
+        const lowerCaseQuery = searchQuery.toLowerCase();
+        return tracks.filter(track =>
+            track.name.toLowerCase().includes(lowerCaseQuery));
+    }, [searchQuery, tracks]);
+
     return (
         <div className={`${styles.main__centerblock} ${styles.centerblock}`}>
             <div className={`${styles.centerblock__search} ${styles.search}`}>
@@ -14,12 +33,15 @@ export default function MainCenterBlock({audioRef}: { audioRef: RefObject<HTMLAu
                     className={styles.search__text}
                     type="search"
                     placeholder="Поиск"
-                    name="search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                 />
             </div>
-            <h2 className={styles.centerblock__h2}>Треки</h2>
-            <Filter/>
-            <MainContent audioRef={audioRef}/>
+            <h1 className={styles.centerblock__h2}>
+                {selection.length > 0 ? "Ваш плейлист" : "Все треки"}
+            </h1>
+            <Filter tracks={filteredTracks} />
+            <MainContent tracks={filteredTracks} />
         </div>
     );
 }

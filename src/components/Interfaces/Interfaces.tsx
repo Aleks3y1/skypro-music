@@ -10,6 +10,14 @@ export interface Track {
         data: number[];
     };
     release_date: string;
-    staredUser: number[];
     track_file: string;
+    staredUser: (number | undefined)[];
+}
+
+export interface Selection {
+    _id: number;
+    name: string;
+    items: number[];
+    owner: number[];
+    __v: number;
 }

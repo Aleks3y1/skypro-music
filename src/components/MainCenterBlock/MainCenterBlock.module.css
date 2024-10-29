@@ -1,4 +1,4 @@
-.main__centerblock {
+.sidebar__icon.main__centerblock {
     width: auto;
     -webkit-box-flex: 3;
     -ms-flex-positive: 3;
@@ -89,4 +89,3 @@
     letter-spacing: -0.8px;
     margin-bottom: 45px;
 }
-
