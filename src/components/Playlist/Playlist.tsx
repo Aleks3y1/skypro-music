@@ -27,7 +27,7 @@ export interface PlaylistProps {
     tracks: Track[];
 }
 
-export default function Playlist({ tracks }: PlaylistProps) {
+export default function Playlist({ tracks}: PlaylistProps) {
     const formatDuration = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
@@ -40,7 +40,6 @@ export default function Playlist({ tracks }: PlaylistProps) {
     const userState = useAppSelector((state) => state.user) as UserState;
     const [updatedTracks, setUpdatedTracks] = useState<Track[]>(tracks);
 
-    // Обновляем состояние треков при изменении пропсов tracks
     useEffect(() => {
         setUpdatedTracks(tracks);
     }, [tracks]);
@@ -62,13 +61,13 @@ export default function Playlist({ tracks }: PlaylistProps) {
         }
     };
 
-    const unlike = async (trackId: number, token: string) => {
+    const unlike = async (trackId: number, token: string, onUnlikeCallback?: () => void) => {
         try {
             await unlikeTrack(trackId, token);
             updateTrackArray(trackId, false);
+            if (onUnlikeCallback) onUnlikeCallback();
         } catch (error) {
-            console.error('Ошибка при снятии лайка:', error);
-            alert('Ошибка при снятии лайка. Попробуйте снова.');
+            console.error("Ошибка при снятии лайка:", error);
         }
     };
 

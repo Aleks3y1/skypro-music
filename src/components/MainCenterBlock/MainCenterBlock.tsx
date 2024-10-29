@@ -2,17 +2,27 @@
 import styles from "@/components/MainCenterBlock/MainCenterBlock.module.css";
 import Filter from "@/components/Filter/Filter";
 import MainContent from "@/components/MainContent/MainContent";
-import {Track} from "@/components/Interfaces/Interfaces";
-import {useAppSelector} from "@/store/store";
-import {useParams} from "next/navigation";
+import { Track } from "@/components/Interfaces/Interfaces";
+import { useState, useMemo } from "react";
+import { useAppSelector } from "@/store/store";
 
 export interface PlaylistProps {
     tracks: Track[];
 }
 
-export default function MainCenterBlock({tracks}: PlaylistProps) {
-    const {selection} = useAppSelector((state) => state.player);
-    const {id} = useParams();
+export default function MainCenterBlock({ tracks }: PlaylistProps) {
+    const { selection } = useAppSelector((state) => state.player);
+    const [searchQuery, setSearchQuery] = useState<string>("");
+
+    const filteredTracks = useMemo(() => {
+        if (searchQuery.trim() === "") {
+            return tracks;
+        }
+        const lowerCaseQuery = searchQuery.toLowerCase();
+        return tracks.filter(track =>
+            track.name.toLowerCase().includes(lowerCaseQuery));
+    }, [searchQuery, tracks]);
+
     return (
         <div className={`${styles.main__centerblock} ${styles.centerblock}`}>
             <div className={`${styles.centerblock__search} ${styles.search}`}>
@@ -23,14 +33,15 @@ export default function MainCenterBlock({tracks}: PlaylistProps) {
                     className={styles.search__text}
                     type="search"
                     placeholder="Поиск"
-                    name="search"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                 />
             </div>
             <h1 className={styles.centerblock__h2}>
-                {selection.find((sel) => String(sel._id) === id)?.name || "Все треки"}
+                {selection.length > 0 ? "Ваш плейлист" : "Все треки"}
             </h1>
-            <Filter/>
-            <MainContent tracks={tracks}/>
+            <Filter tracks={filteredTracks} />
+            <MainContent tracks={filteredTracks} />
         </div>
     );
 }

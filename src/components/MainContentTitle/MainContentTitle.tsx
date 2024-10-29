@@ -7,7 +7,7 @@ export default function MainContentTitle() {
             <div className={`${styles.playlistTitle__col} ${styles.col02}`}>Исполнитель</div>
             <div className={`${styles.playlistTitle__col} ${styles.col03}`}>Альбом</div>
             <div className={`${styles.playlistTitle__col} ${styles.col04}`}>
-                <svg className={styles.playlistTitle__svg}>
+                <svg className={styles.playlistTitle__svg} data-testid="icon-watch">
                     <use xlinkHref="/img/icon/sprite.svg#icon-watch"></use>
                 </svg>
             </div>

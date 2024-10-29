@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { logIn } from "@/app/api/logIn";
 
 const initialState = {
-    user: null,  // Удаляем инициализацию из localStorage
+    user: null,
     errorMessage: '',
 };
 
@@ -27,7 +27,7 @@ const userSlice = createSlice({
         builder
             .addCase(logIn.fulfilled, (state, action) => {
                 state.user = action.payload;
-                localStorage.setItem("user", JSON.stringify(action.payload)); // Сохраняем пользователя в localStorage после успешного входа
+                localStorage.setItem("user", JSON.stringify(action.payload));
                 console.log("Данные пользователя:", action.payload);
             })
             .addCase(logIn.rejected, (state, action) => {

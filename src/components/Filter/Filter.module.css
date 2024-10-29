@@ -35,17 +35,29 @@
     margin-right: 10px;
 }
 
-._btnText:hover {
-    border-color: #d9b6ff;
-    color: #d9b6ff;
-    cursor: pointer;
-}
-
-._btnText:active {
+.filter__button:active {
     border-color: #ad61ff;
     color: #ad61ff;
     cursor: pointer;
+    text-decoration: underline;
 }
+
+.categoryElem:hover {
+    color: #B672FF;
+    text-decoration: underline;
+}
+
+/*._btnText:hover {*/
+/*    border-color: #d9b6ff;*/
+/*    color: #d9b6ff;*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*._btnText:active {*/
+/*    border-color: #ad61ff;*/
+/*    color: #ad61ff;*/
+/*    cursor: pointer;*/
+/*}*/
 
 .filter__window {
     max-width: 248px;

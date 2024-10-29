@@ -24,6 +24,7 @@ export default function PlayerBar() {
                 <audio
                     ref={audioRef}
                     src={currentTrack.track_file}
+                    data-testid="audio-element"
                     onTimeUpdate={(e: SyntheticEvent<HTMLAudioElement>) => {
                         dispatch(setCurrentTime(e.currentTarget.currentTime));
                         setDuration(e.currentTarget.duration);

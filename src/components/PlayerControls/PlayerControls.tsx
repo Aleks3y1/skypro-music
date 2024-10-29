@@ -51,14 +51,12 @@ export default function PlayerControls({audioRef}: { audioRef: RefObject<HTMLAud
         }
     };
 
-    //обновление громкостью
     useEffect(() => {
         if (audioRef.current) {
             audioRef.current.volume = Number(volume);
         }
     }, [volume]);
 
-    //обновляем текущий трек
     useEffect(() => {
         if (trackArray && trackArray.length > 0) {
             dispatch(setCurrentTrack(trackArray[currentTrackNum]));
@@ -107,7 +105,6 @@ export default function PlayerControls({audioRef}: { audioRef: RefObject<HTMLAud
         }
     };
 
-    //проверка закончился ли трек => переключение на следующий трек
     useEffect(() => {
         const audio = audioRef.current;
         if (audio) {
